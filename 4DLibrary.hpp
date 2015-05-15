@@ -10,7 +10,12 @@ class 4DLibrary
 {
 private :
 
-
+	void clear_rx_buffer();
+	
+	void write_commande(unsigned char* cmd, unsigned char size);
+	
+	void read_commande(unsigned char* cmd, unsigned char size);
+	
 public : 
 
 };
