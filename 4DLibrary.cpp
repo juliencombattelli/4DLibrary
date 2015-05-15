@@ -23,7 +23,7 @@ void 4DLibrary::clear_rx_buffer()
 	}
 }
 
-void 4DLibrary::write_commande(unsigned char* cmd, unsigned char size)
+void 4DLibrary::write_commande(unsigned char* cmd, unsigned int size)
 {
 	for(unsigned char i = 0; i < size; i++)
 	{
@@ -32,7 +32,7 @@ void 4DLibrary::write_commande(unsigned char* cmd, unsigned char size)
 	}
 }
 
-void 4DLibrary::read_commande(unsigned char* cmd, unsigned char size)
+void 4DLibrary::read_commande(unsigned char* cmd, unsigned int size)
 {
 	for(unsigned char i = 0; i < size; i++)
 	{
@@ -45,6 +45,7 @@ void 4DLibrary::read_commande(unsigned char* cmd, unsigned char size)
 * public function
 */
 
+	/*txt function*/
 unsigned char 4DLibrary::txt_move_cursor(unsigned int line, unsigned int column)
 {
 	unsigned char cmd[6];
@@ -361,7 +362,7 @@ unsigned int 4DLibrary::txt_opacity(bool opaque)
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
 	unsigned char cmd[4];
 	cmd[0] = 0xFF;
@@ -382,7 +383,7 @@ unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap” command is 
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+unsigned int 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
 	unsigned char cmd[4];
 	cmd[0] = 0xFF;
@@ -424,4 +425,63 @@ unsigned int 4DLibrary::txt_wrap(unsigned int wrap_pixel)
 	}
 	else
 		return 0xFFFF; // error
+}
+
+	/*graphics function*/
+	
+	
+	/*media function*/
+unsigned int 4DLibrary::media_init()
+{
+	unsigned char cmd[3];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x89; 
+		
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		if(cmd[3] == 0x01)
+			return( 0x00 );
+		else
+			return( 0xFFFE); // no card is presentor not able to initialise.
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::media_set_addr(uint32_t addr)
+{
+	unsigned char cmd[6];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x93; 
+	cmd[2] = (unsigned char)(addr >> 24);
+	cmd[3] = (unsigned char)(addr >> 16);
+	cmd[4] = (unsigned char)(addr >> 8);
+	cmd[5] = (unsigned char)addr;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+			return( 0x00 );
+	else
+		return( 0xFFFF ); // error
+}
+
+unsigned int 4DLibrary::media_set_sector(uint32_t sector)
+{
+	unsigned char cmd[6];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x92; 
+	cmd[2] = (unsigned char)(sector >> 24);
+	cmd[3] = (unsigned char)(sector >> 16);
+	cmd[4] = (unsigned char)(sector >> 8);
+	cmd[5] = (unsigned char)sector;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+			return( 0x00 );
+	else
+		return( 0xFFFF ); // error
 }

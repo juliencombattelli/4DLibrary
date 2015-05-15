@@ -15,15 +15,13 @@ private :
 	
 	void clear_rx_buffer();
 	
-	void write_commande(unsigned char* cmd, unsigned char size);
+	void write_commande(unsigned char* cmd, unsigned int size);
 	
-	void read_commande(unsigned char* cmd, unsigned char size);
+	void read_commande(unsigned char* cmd, unsigned int size);
 	
 public : 
 	
-	/*
-	* txt function
-	*/
+	/*txt function*/
 	unsigned char txt_move_cursor(unsigned int line, unsigned int column);
 	
 	unsigned char txt_put_char(unsigned char caractere);
@@ -56,11 +54,21 @@ public :
 	
 	unsigned int txt_opacity(bool opaque);
 	
-	unsigned int txt_underline(bool underline); //txt_y_gap” command is required to be at least 2 for the underline to be visible
+	unsigned int txt_underline(bool underline); //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
-	unsigned int txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+	unsigned int txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
 	unsigned int txt_wrap(unsigned int wrap_pixel);
-
+	
+	/*graphics function*/
+	
+	
+	/*media function*/
+	unsigned int media_init();
+	
+	unsigned int media_set_addr(uint32_t addr);
+	
+	unsigned int media_set_sector(uint32_t sector);
+	
 };
 
