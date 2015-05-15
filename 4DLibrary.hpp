@@ -9,7 +9,10 @@
 class 4DLibrary
 {
 private :
-
+	
+	Serial serial;
+	DigitalOut rst;
+	
 	void clear_rx_buffer();
 	
 	void write_commande(unsigned char* cmd, unsigned char size);
@@ -36,6 +39,28 @@ public :
 	unsigned int txt_background_color(unsigned int color);
 	
 	unsigned int txt_set_font(unsigned char font);
+	
+	unsigned int txt_width_multiplier(unsigned char multiplier);
+	
+	unsigned int txt_height_multiplier(unsigned char multiplier);
+	
+	unsigned int txt_x_gap(unsigned char pixel_count);
+	
+	unsigned int txt_y_gap(unsigned char pixel_count);
+	
+	unsigned int txt_bold(bool bold);
+	
+	unsigned int txt_inverse(bool inverse);
+	
+	unsigned int txt_italic(bool italic);
+	
+	unsigned int txt_opacity(bool opaque);
+	
+	unsigned int txt_underline(bool underline); //txt_y_gap” command is required to be at least 2 for the underline to be visible
+	
+	unsigned int txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+	
+	unsigned int txt_wrap(unsigned int wrap_pixel);
 
 };
 

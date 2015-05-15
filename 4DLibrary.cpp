@@ -116,7 +116,7 @@ unsigned int 4DLibrary::txt_char_width(unsigned char car)
 		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
 	else
-		return 0; // impossible value -> error
+		return ( 0xFFFF ); // impossible value -> error
 }
 
 unsigned int 4DLibrary::txt_char_height(unsigned char car)
@@ -133,7 +133,7 @@ unsigned int 4DLibrary::txt_char_height(unsigned char car)
 		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
 	else
-		return 0; // impossible value -> error
+		return ( 0xFFFF ); // impossible value -> error
 }
 
 unsigned int 4DLibrary::txt_foreground_color(unsigned int color)
@@ -181,13 +181,246 @@ unsigned int 4DLibrary::txt_set_font(unsigned char font)
 	if(font > 0 && font < 4)
 		cmd[3] = font - 1; // adaptation for font id
 	else
-		return( 0x00 ); // invalid font
+		return( 0x0xFFFE ); // invalid font
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
 		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous font
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_width_multiplier(unsigned char multiplier)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xE4;
+	cmd[2] = 0x00;
+	if(font >= 1 && font <= 16)
+		cmd[3] = multiplier; 
+	else
+		return( 0xFFFE ); // invalid multiplier
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous multiplier
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_height_multiplier(unsigned char multiplier)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xE3;
+	cmd[2] = 0x00;
+	if(font >= 1 && font <= 16)
+		cmd[3] = multiplier; 
+	else
+		return( 0xFFFE ); // invalid multiplier
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous multiplier
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_x_gap(unsigned char pixel_count)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xE2;
+	cmd[2] = 0x00;
+	if(font >= 0 && font <= 32)
+		cmd[3] = pixel_count; 
+	else
+		return( 0xFFFE ); // invalid multiplier
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous x_gap
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_y_gap(unsigned char pixel_count)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xE1;
+	cmd[2] = 0x00;
+	if(font >= 1 && font <= 32)
+		cmd[3] = pixel_count; 
+	else
+		return( 0xFFFE ); // invalid multiplier
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous y_gap
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_bold(bool bold)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDE;
+	cmd[2] = 0x00;
+	if(bold == false)
+		cmd[3] = 0x00; 
+	else
+		cmd[3] = 0x01;
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous bold mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_inverse(bool inverse)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDC;
+	cmd[2] = 0x00;
+	if(inverse == false)
+		cmd[3] = 0x00; 
+	else
+		cmd[3] = 0x01;
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous inverse mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_italic(bool italic)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDD;
+	cmd[2] = 0x00;
+	if(italic == false)
+		cmd[3] = 0x00; 
+	else
+		cmd[3] = 0x01;
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous italic mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_opacity(bool opaque)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDF;
+	cmd[2] = 0x00;
+	if(opaque == false)
+		cmd[3] = 0x00; //transparent
+	else
+		cmd[3] = 0x01; //opaque
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous opacity mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDB;
+	cmd[2] = 0x00;
+	if(underline == false)
+		cmd[3] = 0x00;
+	else
+		cmd[3] = 0x01;
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous underline mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap” command is required to be at least 2 for the underline to be visible
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xDA;
+	cmd[2] = 0x00;
+	cmd[3] = 0x00
+	if(bold == true)
+		cmd[3] = cmd[3] | (0x01 << 4);
+	if(italic == true)
+		cmd[3] = cmd[3] | (0x01 << 5);
+	if(inverse == true)
+		cmd[3] = cmd[3] | (0x01 << 6);
+	if(underline == true)
+		cmd[3] = cmd[3] | (0x01 << 7);
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous attributes mode
+	}
+	else
+		return 0xFFFF; // error
+}
+
+unsigned int 4DLibrary::txt_wrap(unsigned int wrap_pixel)
+{
+	unsigned char cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xD9;
+	cmd[2] = (unsigned char)(wrap_pixel>>8);
+	cmd[3] = (unsigned char)wrap_pixel; 
+		
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] = 0x06)
+	{
+		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous wrap pixel
 	}
 	else
 		return 0xFFFF; // error
