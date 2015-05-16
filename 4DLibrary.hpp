@@ -167,10 +167,10 @@ private :
 	void read_commande(uint8_t* cmd, uint16_t size);
 	
 	/*media function*/
-uint16_t 4DLibrary::media_flush();
+	uint16_t media_flush();
 
 	/*UART function*/
-uint8_t code_baud_rate(uint32_t baud_rate);
+	uint8_t code_baud_rate(uint32_t baud_rate);
 	
 public : 
 	
@@ -226,6 +226,14 @@ public :
 	uint8_t gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour);
 	
 	uint8_t gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour);
+	
+	uint8_t gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour);
+
+	uint8_t gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour);
+
+	uint8_t gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour);
+
+	uint8_t gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour);
 	
 	/*media function*/
 	uint16_t media_init();
