@@ -62,6 +62,119 @@ uint16_t 4DLibrary::media_flush()
 	}
 }
 
+	/*UART function*/
+uint8_t 4DLibrary::code_baud_rate(uint32_t baud_rate)
+{
+	switch(baud_rate)
+	{
+		case 110:
+		{
+			return 0;
+		}
+		break;
+		case 300:
+		{
+			return 1;
+		}
+		break;
+		case 600:
+		{
+			return 2;
+		}
+		break;
+		case 1200:
+		{
+			return 3;
+		}
+		break;
+		case 2400:
+		{
+			return 4;
+		}
+		break;
+		case 4800:
+		{
+			return 5;
+		}
+		break;
+		case 9600:
+		{
+			return 6;
+		}
+		break;
+		case 14400:
+		{
+			return 7;
+		}
+		break;
+		case 19200:
+		{
+			return 8;
+		}
+		break;
+		case 31250:
+		{
+			return 9;
+		}
+		break;
+		case 38400:
+		{
+			return 10;
+		}
+		break;
+		case 56000:
+		{
+			return 11;
+		}
+		break;
+		case 57600:
+		{
+			return 12;
+		}
+		break;
+		case 115200:
+		{
+			return 13;
+		}
+		break;
+		case 128000:
+		{
+			return 14;
+		}
+		break;
+		case 256000:
+		{
+			return 15;
+		}
+		break;
+		case 300000:
+		{
+			return 16;
+		}
+		break;
+		case 375000:
+		{
+			return 17;
+		}
+		break;
+		case 500000:
+		{
+			return 18;
+		}
+		break;
+		case 600000:
+		{
+			return 19;
+		}
+		break;
+		default:
+		{
+			return 20;
+		}
+		break;
+	}
+}
+
 /*
 * public function
 */
@@ -842,3 +955,24 @@ uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t f
 }
 
 	/* UART function*/
+uint16_t 4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0x00;
+	cmd[1] = 0x26; 
+	cmd[2] = 0x00;
+	cmd[3] = code_baud_rate(baud_rate);
+	if(cmd[3] != 20)
+	{
+		write_commande(cmd, 4);
+		read_commande(cmd, 1);
+		if(cmd[0] != 0x06)
+			return( 0xFFFF ); // error
+		else
+		{
+			return( 0x00 );
+		}
+	}
+	else
+		return( 0xFFFE ); //invalid baud_rate
+}

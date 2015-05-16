@@ -168,6 +168,9 @@ private :
 	
 	/*media function*/
 uint16_t 4DLibrary::media_flush();
+
+	/*UART function*/
+uint8_t code_baud_rate(uint32_t baud_rate);
 	
 public : 
 	
@@ -249,5 +252,7 @@ public :
 	
 	uint16_t media_display_video_frame(uint16_t x, uint16_t y, uint16_t frame_number); // set addr or sector before
 	
+	/*UART function*/
+	uint16_t uart_set_baud_rate(uint32_t baud_rate);
 };
 
