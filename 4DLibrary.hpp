@@ -166,6 +166,9 @@ private :
 	
 	void read_commande(uint8_t* cmd, uint16_t size);
 	
+	/*media function*/
+uint16_t 4DLibrary::media_flush();
+	
 public : 
 	
 	/*txt function*/
@@ -227,6 +230,24 @@ public :
 	uint16_t media_set_addr(uint32_t addr);
 	
 	uint16_t media_set_sector(uint32_t sector);
+	
+	uint16_t media_read_sector(uint8_t* sector); // sector must be a 512 areas map / set sector before
+	
+	uint16_t media_write_sector(uint8_t* sector); // sector must be a 512 areas map / set sector before
+	
+	uint16_t media_read_byte(); // set addr before
+	
+	uint16_t media_read_word(); // set addr before
+	
+	uint16_t media_write_byte(uint8_t byte); // set addr before
+	
+	uint16_t media_write_word(uint16_t word); // set addr before
+	
+	uint16_t media_display_image(uint16_t x, uint16_t y); // set addr or sector before
+	
+	uint16_t media_display_video(uint16_t x, uint16_t y); // set addr or sector before
+	
+	uint16_t media_display_video_frame(uint16_t x, uint16_t y, uint16_t frame_number); // set addr or sector before
 	
 };
 
