@@ -10,8 +10,8 @@ class 4DLibrary
 {
 private :
 	
-	Serial serial;
-	DigitalOut rst;
+	Serial m_serial;
+	DigitalOut m_rst;
 	
 	void clear_rx_buffer();
 	
@@ -62,6 +62,9 @@ public :
 	
 	/*graphics function*/
 	
+	uint8_t gfx_clear_screen();
+	
+	uint8_t gfx_change_color(uint16_t old_color, uint16_t new_color);
 	
 	/*media function*/
 	unsigned int media_init();

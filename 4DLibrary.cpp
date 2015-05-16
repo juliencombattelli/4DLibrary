@@ -6,7 +6,7 @@
 
 #include "4DLibrary.hpp"
 
-4DLibrary::4DLibrary(PinName tx, PinName rx, PinName reset) : serial(tx, rx), rst(reset)
+4DLibrary::4DLibrary(PinName tx, PinName rx, PinName reset) : m_serial(tx, rx), m_rst(reset)
 {
 	clear_rx_buffer();
 }
@@ -17,9 +17,9 @@
 
 void 4DLibrary::clear_rx_buffer()
 {
-	while(serial.readable())
+	while(m_serial.readable())
 	{
-		serial.getc();
+		m_serial.getc();
 	}
 }
 
@@ -27,8 +27,8 @@ void 4DLibrary::write_commande(unsigned char* cmd, unsigned int size)
 {
 	for(unsigned char i = 0; i < size; i++)
 	{
-		while (!serial.writeable());
-		serial.putc(cmd[i]);
+		while (!m_serial.writeable());
+		m_serial.putc(cmd[i]);
 	}
 }
 
@@ -36,8 +36,8 @@ void 4DLibrary::read_commande(unsigned char* cmd, unsigned int size)
 {
 	for(unsigned char i = 0; i < size; i++)
 	{
-		while (!serial.readable());
-		cmd[i] = serial.getc();
+		while (!m_serial.readable());
+		cmd[i] = m_serial.getc();
 	}
 }
 
@@ -428,7 +428,38 @@ unsigned int 4DLibrary::txt_wrap(unsigned int wrap_pixel)
 }
 
 	/*graphics function*/
+
+uint8_t 4DLibrary::gfx_clear_screen()
+{
+	unsigned char cmd[2];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xCD;
 	
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}	
+
+uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xFE;
+	cmd[2] = (uint8_t)old_color >> 8;
+	cmd[3] = (uint8_t)old_color;
+	cmd[4] = (uint8_t)new_color >> 8;
+	cmd[5] = (uint8_t)new_color;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
 	
 	/*media function*/
 unsigned int 4DLibrary::media_init()
