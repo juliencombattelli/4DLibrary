@@ -254,5 +254,8 @@ public :
 	
 	/*UART function*/
 	uint16_t uart_set_baud_rate(uint32_t baud_rate);
+	
+	/* timer function*/
+	uint16_t timer_sleep_systeme(uint16_t units); // 1 unit = approximatly 1 second
 };
 

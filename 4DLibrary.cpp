@@ -976,3 +976,22 @@ uint16_t 4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 	else
 		return( 0xFFFE ); //invalid baud_rate
 }
+
+	/* timer function*/
+uint16_t 4DLibrary::timer_sleep_systeme(uint16_t units)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0x00;
+	cmd[1] = 0x26; 
+	cmd[2] = (uint8_t)(units >> 8);
+	cmd[3] = (uint8_t)units;
+
+	write_commande(cmd, 4);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( 0x00 );
+	}
+}
