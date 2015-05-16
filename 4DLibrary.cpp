@@ -448,12 +448,104 @@ uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xFE;
-	cmd[2] = (uint8_t)old_color >> 8;
-	cmd[3] = (uint8_t)old_color;
-	cmd[4] = (uint8_t)new_color >> 8;
-	cmd[5] = (uint8_t)new_color;
+	cmd[2] = uint8_t(old_color >> 8);
+	cmd[3] = uint8_t(old_color);
+	cmd[4] = uint8_t(new_color >> 8);
+	cmd[5] = uint8_t(new_color);
 	
 	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
+
+uint8_t 4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+{
+	uint8_t cmd[10];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xC3;
+	cmd[2] = uint8_t(center_x >> 8);
+	cmd[3] = uint8_t(center_x);
+	cmd[4] = uint8_t(center_y >> 8);
+	cmd[5] = uint8_t(center_y);
+	cmd[6] = uint8_t(radius >> 8);
+	cmd[7] = uint8_t(radius);
+	cmd[8] = uint8_t(colour >> 8);
+	cmd[9] = uint8_t(colour);
+	
+	write_commande(cmd, 10);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
+
+uint8_t 4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+{
+	uint8_t cmd[10];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xC2;
+	cmd[2] = uint8_t(center_x >> 8);
+	cmd[3] = uint8_t(center_x);
+	cmd[4] = uint8_t(center_y >> 8);
+	cmd[5] = uint8_t(center_y);
+	cmd[6] = uint8_t(radius >> 8);
+	cmd[7] = uint8_t(radius);
+	cmd[8] = uint8_t(colour >> 8);
+	cmd[9] = uint8_t(colour);
+	
+	write_commande(cmd, 10);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
+
+uint8_t 4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+{
+	uint8_t cmd[12];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xC8;
+	cmd[2] = uint8_t(x1 >> 8);
+	cmd[3] = uint8_t(x1);
+	cmd[4] = uint8_t(y1 >> 8);
+	cmd[5] = uint8_t(y1);
+	cmd[6] = uint8_t(x2 >> 8);
+	cmd[7] = uint8_t(x2);
+	cmd[8] = uint8_t(y2 >> 8);
+	cmd[9] = uint8_t(y2);
+	cmd[10] = uint8_t(colour >> 8);
+	cmd[11] = uint8_t(colour);
+	
+	write_commande(cmd, 10);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
+
+uint8_t 4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+{
+	uint8_t cmd[12];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xC5;
+	cmd[2] = uint8_t(x1 >> 8);
+	cmd[3] = uint8_t(x1);
+	cmd[4] = uint8_t(y1 >> 8);
+	cmd[5] = uint8_t(y1);
+	cmd[6] = uint8_t(x2 >> 8);
+	cmd[7] = uint8_t(x2);
+	cmd[8] = uint8_t(y2 >> 8);
+	cmd[9] = uint8_t(y2);
+	cmd[10] = uint8_t(colour >> 8);
+	cmd[11] = uint8_t(colour);
+	
+	write_commande(cmd, 10);
 	read_commande(cmd, 1);
 	if(cmd[0] = 0x06)
 		return 0;
