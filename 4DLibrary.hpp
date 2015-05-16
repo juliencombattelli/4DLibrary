@@ -206,7 +206,7 @@ public :
 	
 	uint16_t txt_underline(bool underline); //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
-	uint16_t txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+	uint16_t txt_attributes(bool bold, bool italic, bool inverse, bool underline); //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
 	uint16_t txt_wrap(uint16_t wrap_pixel);
 	

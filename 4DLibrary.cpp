@@ -498,7 +498,7 @@ uint8_t 4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_
 	
 	write_commande(cmd, 10);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -520,7 +520,7 @@ uint8_t 4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, 
 	
 	write_commande(cmd, 10);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -544,7 +544,7 @@ uint8_t 4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t
 	
 	write_commande(cmd, 10);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -568,7 +568,7 @@ uint8_t 4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uin
 	
 	write_commande(cmd, 10);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -592,7 +592,7 @@ uint8_t 4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t 
 	
 	write_commande(cmd, 10);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
