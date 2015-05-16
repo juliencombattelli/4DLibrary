@@ -153,7 +153,7 @@ namespace Color
 	}
 }
 
-class 4DLibrary
+class uLCD_4DSystems
 {
 private :
 	
