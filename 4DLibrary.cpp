@@ -573,6 +573,30 @@ uint8_t 4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uin
 	else
 		return 1;
 }
+
+uint8_t 4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+{
+	uint8_t cmd[12];
+	cmd[0] = 0xFF;
+	cmd[1] = 0xC4;
+	cmd[2] = uint8_t(x1 >> 8);
+	cmd[3] = uint8_t(x1);
+	cmd[4] = uint8_t(y1 >> 8);
+	cmd[5] = uint8_t(y1);
+	cmd[6] = uint8_t(x2 >> 8);
+	cmd[7] = uint8_t(x2);
+	cmd[8] = uint8_t(y2 >> 8);
+	cmd[9] = uint8_t(y2);
+	cmd[10] = uint8_t(colour >> 8);
+	cmd[11] = uint8_t(colour);
+	
+	write_commande(cmd, 10);
+	read_commande(cmd, 1);
+	if(cmd[0] = 0x06)
+		return 0;
+	else
+		return 1;
+}
 	
 	/*media function*/
 uint16_t 4DLibrary::media_init()
