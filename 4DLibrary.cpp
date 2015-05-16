@@ -737,60 +737,6 @@ uint8_t 4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_
 	else
 		return 1;
 }
-
-uint8_t 4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
-{
-	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
-						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
-						//				   + colourMSB + colourLSB
-	cmd[0] = 0x00;
-	cmd[1] = 0x13;
-	
-	for(int i = 0; i < n ; ++i)
-	{
-		cmd[i*4+2] = uint8_t(x_array[i]>>8);
-		cmd[i*4+3] = uint8_t(x_array[i]);
-		cmd[i*4+4] = uint8_t(y_array[i]>>8);
-		cmd[i*4+5] = uint8_t(y_array[i]);
-	}
-	
-	cmd[2+n*4] = uint8_t(colour >> 8);
-	cmd[2+n*4+1] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
-}
-
-uint8_t 4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
-{
-	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
-						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
-						//				   + colourMSB + colourLSB
-	cmd[0] = 0x00;
-	cmd[1] = 0x14;
-	
-	for(int i = 0; i < n ; ++i)
-	{
-		cmd[i*4+2] = uint8_t(x_array[i]>>8);
-		cmd[i*4+3] = uint8_t(x_array[i]);
-		cmd[i*4+4] = uint8_t(y_array[i]>>8);
-		cmd[i*4+5] = uint8_t(y_array[i]);
-	}
-	
-	cmd[2+n*4] = uint8_t(colour >> 8);
-	cmd[2+n*4+1] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
-}
 	
 	/*media function*/
 uint16_t 4DLibrary::media_init()
