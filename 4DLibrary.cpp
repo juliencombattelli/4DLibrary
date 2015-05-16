@@ -41,6 +41,27 @@ void 4DLibrary::read_commande(uint8_t* cmd, uint16_t size)
 	}
 }
 
+	/*media function*/
+uint16_t 4DLibrary::media_flush()
+{
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x8A; 
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		if( ((cmd[1] << 8) | cmd[2]) == 0x0000 ) 
+			return( 0xFFFF );
+		else
+			return( 0x00 );
+		
+	}
+}
+
 /*
 * public function
 */
@@ -58,7 +79,7 @@ uint8_t 4DLibrary::txt_move_cursor(uint16_t line, uint16_t column)
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -74,7 +95,7 @@ uint8_t 4DLibrary::txt_put_char(uint8_t caractere)
 	
 	write_commande(cmd, 4);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -92,7 +113,7 @@ uint8_t 4DLibrary::txt_put_str(uint8_t* str)
 	write_commande(str, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		if( ((cmd[1]<<8) || cmd[2]) == size)
 			return 0;
@@ -112,7 +133,7 @@ uint16_t 4DLibrary::txt_char_width(uint8_t car)
 	
 	write_commande(cmd, 3);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
@@ -129,7 +150,7 @@ uint16_t 4DLibrary::txt_char_height(uint8_t car)
 	
 	write_commande(cmd, 3);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
@@ -147,7 +168,7 @@ uint16_t 4DLibrary::txt_foreground_color(uint16_t color)
 	
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
 	}
@@ -165,7 +186,7 @@ uint16_t 4DLibrary::txt_background_color(uint16_t color)
 	
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
 	}
@@ -186,7 +207,7 @@ uint16_t 4DLibrary::txt_set_font(uint8_t font)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous font
 	}
@@ -207,7 +228,7 @@ uint16_t 4DLibrary::txt_width_multiplier(uint8_t multiplier)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
 	}
@@ -228,7 +249,7 @@ uint16_t 4DLibrary::txt_height_multiplier(uint8_t multiplier)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
 	}
@@ -249,7 +270,7 @@ uint16_t 4DLibrary::txt_x_gap(uint8_t pixel_count)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous x_gap
 	}
@@ -270,7 +291,7 @@ uint16_t 4DLibrary::txt_y_gap(uint8_t pixel_count)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous y_gap
 	}
@@ -291,7 +312,7 @@ uint16_t 4DLibrary::txt_bold(bool bold)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous bold mode
 	}
@@ -312,7 +333,7 @@ uint16_t 4DLibrary::txt_inverse(bool inverse)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous inverse mode
 	}
@@ -333,7 +354,7 @@ uint16_t 4DLibrary::txt_italic(bool italic)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous italic mode
 	}
@@ -354,7 +375,7 @@ uint16_t 4DLibrary::txt_opacity(bool opaque)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous opacity mode
 	}
@@ -375,7 +396,7 @@ uint16_t 4DLibrary::txt_underline(bool underline) //txt_y_gap command is require
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous underline mode
 	}
@@ -401,7 +422,7 @@ uint16_t 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool un
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous attributes mode
 	}
@@ -419,7 +440,7 @@ uint16_t 4DLibrary::txt_wrap(uint16_t wrap_pixel)
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous wrap pixel
 	}
@@ -437,7 +458,7 @@ uint8_t 4DLibrary::gfx_clear_screen()
 	
 	write_commande(cmd, 2);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -455,7 +476,7 @@ uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 		return 0;
 	else
 		return 1;
@@ -470,7 +491,7 @@ uint16_t 4DLibrary::media_init()
 		
 	write_commande(cmd, 2);
 	read_commande(cmd, 3);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 	{
 		if(cmd[3] == 0x01)
 			return( 0x00 );
@@ -493,7 +514,7 @@ uint16_t 4DLibrary::media_set_addr(uint32_t addr)
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 			return( 0x00 );
 	else
 		return( 0xFFFF ); // error
@@ -511,8 +532,195 @@ uint16_t 4DLibrary::media_set_sector(uint32_t sector)
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
-	if(cmd[0] = 0x06)
+	if(cmd[0] == 0x06)
 			return( 0x00 );
 	else
 		return( 0xFFFF ); // error
+}
+
+uint16_t 4DLibrary::media_read_sector(uint8_t* sector)
+{
+	uint8_t cmd[2];
+	cmd[0] = 0x00;
+	cmd[1] = 0x16; 
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		read_commande(cmd, 2);
+		if(cmd[2] != 0x01)
+			return( 0xFFFF ); // error
+		else
+		{
+			read_commande(sector, 512);
+			return( 0x00 );
+		}
+	}
+}
+
+uint16_t 4DLibrary::media_write_sector(uint8_t* sector)
+{
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x17; 
+	
+	write_commande(cmd, 2);
+	write_commande(sector, 512);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		if( ((cmd[1] << 8) | cmd[2]) == 0x0000 ) 
+			return( 0xFFFF );
+		else if(media_flush() != 0x00)
+			return( 0x00 ); // sector that is being written is correctly 
+		else
+			return(0xFFFE); // sector that isn't being written is correctly 
+	}
+}
+
+uint16_t 4DLibrary::media_read_byte()
+{
+	uint8_t cmd[2];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x8F; 
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		read_commande(cmd, 2);
+		return( (cmd[0] << 8) | cmd[1] );
+	}
+}
+
+uint16_t 4DLibrary::media_read_word()
+{
+	uint8_t cmd[2];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x8E; 
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error /!\ it's also a possible value
+	else
+	{
+		read_commande(cmd, 2);
+		return( (cmd[0] << 8) | cmd[1] );
+	}
+}
+
+uint16_t 4DLibrary::media_write_byte(uint8_t byte)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0x00;
+	cmd[1] = 0x8D; 
+	cmd[2] = 0x00;
+	cmd[3] = byte;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		if( ((cmd[1] << 8) | cmd[2]) == 0x0000 ) 
+			return( 0xFFFF );
+		else if(media_flush() != 0x00)
+			return( 0x00 ); // sector that is being written is correctly 
+		else
+			return(0xFFFE); // sector that isn't being written is correctly 
+	}
+}
+
+uint16_t 4DLibrary::media_write_word(uint16_t word)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0x00;
+	cmd[1] = 0x8C; 
+	cmd[2] = (uint8_t)(word >> 8);
+	cmd[3] = (uint8_t)word;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		if( ((cmd[1] << 8) | cmd[2]) == 0x0000 ) 
+			return( 0xFFFF );
+		else if(media_flush() != 0x00)
+			return( 0x00 ); // sector that is being written is correctly 
+		else
+			return(0xFFFE); // sector that isn't being written is correctly  
+	}
+}
+
+uint16_t 4DLibrary::media_display_image(uint16_t x, uint16_t y)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0x00;
+	cmd[1] = 0x8B; 
+	cmd[2] = (uint8_t)(x >> 8);
+	cmd[3] = (uint8_t)x;
+	cmd[4] = (uint8_t)(y >> 8);
+	cmd[5] = (uint8_t)y;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( 0x00 );
+	}
+}
+
+uint16_t 4DLibrary::media_display_video(uint16_t x, uint16_t y)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0x00;
+	cmd[1] = 0x95; 
+	cmd[2] = (uint8_t)(x >> 8);
+	cmd[3] = (uint8_t)x;
+	cmd[4] = (uint8_t)(y >> 8);
+	cmd[5] = (uint8_t)y;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( 0x00 );
+	}
+}
+
+uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t frame_number)
+{
+	uint8_t cmd[8];
+	cmd[0] = 0x00;
+	cmd[1] = 0x95; 
+	cmd[2] = (uint8_t)(x >> 8);
+	cmd[3] = (uint8_t)x;
+	cmd[4] = (uint8_t)(y >> 8);
+	cmd[5] = (uint8_t)y;
+	cmd[4] = (uint8_t)(frame_number >> 8);
+	cmd[5] = (uint8_t)frame_number;
+	
+	write_commande(cmd, 8);
+	read_commande(cmd, 1);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( 0x00 );
+	}
 }
