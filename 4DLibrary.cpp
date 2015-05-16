@@ -823,7 +823,7 @@ uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t f
 {
 	uint8_t cmd[8];
 	cmd[0] = 0x00;
-	cmd[1] = 0x95; 
+	cmd[1] = 0x94; 
 	cmd[2] = (uint8_t)(x >> 8);
 	cmd[3] = (uint8_t)x;
 	cmd[4] = (uint8_t)(y >> 8);
@@ -840,3 +840,5 @@ uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t f
 		return( 0x00 );
 	}
 }
+
+	/* UART function*/
