@@ -257,5 +257,8 @@ public :
 	
 	/* timer function*/
 	uint16_t timer_sleep_systeme(uint16_t units); // 1 unit = approximatly 1 second
+	
+	/* file function*/
+	uint16_t file_last_error();
 };
 

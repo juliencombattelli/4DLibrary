@@ -981,8 +981,8 @@ uint16_t 4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 uint16_t 4DLibrary::timer_sleep_systeme(uint16_t units)
 {
 	uint8_t cmd[4];
-	cmd[0] = 0x00;
-	cmd[1] = 0x26; 
+	cmd[0] = 0xFF;
+	cmd[1] = 0x3B; 
 	cmd[2] = (uint8_t)(units >> 8);
 	cmd[3] = (uint8_t)units;
 
@@ -993,5 +993,22 @@ uint16_t 4DLibrary::timer_sleep_systeme(uint16_t units)
 	else
 	{
 		return( 0x00 );
+	}
+}
+
+	/* file function*/
+uint16_t 4DLibrary::file_last_error()
+{
+	uint8_t cmd[3];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x1F; 
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( (cmd[1] << 8) | cmd[2] );
 	}
 }
