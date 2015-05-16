@@ -23,18 +23,18 @@ void 4DLibrary::clear_rx_buffer()
 	}
 }
 
-void 4DLibrary::write_commande(unsigned char* cmd, unsigned int size)
+void 4DLibrary::write_commande(uint8_t* cmd, uint16_t size)
 {
-	for(unsigned char i = 0; i < size; i++)
+	for(uint8_t i = 0; i < size; i++)
 	{
 		while (!m_serial.writeable());
 		m_serial.putc(cmd[i]);
 	}
 }
 
-void 4DLibrary::read_commande(unsigned char* cmd, unsigned int size)
+void 4DLibrary::read_commande(uint8_t* cmd, uint16_t size)
 {
-	for(unsigned char i = 0; i < size; i++)
+	for(uint8_t i = 0; i < size; i++)
 	{
 		while (!m_serial.readable());
 		cmd[i] = m_serial.getc();
@@ -46,15 +46,15 @@ void 4DLibrary::read_commande(unsigned char* cmd, unsigned int size)
 */
 
 	/*txt function*/
-unsigned char 4DLibrary::txt_move_cursor(unsigned int line, unsigned int column)
+uint8_t 4DLibrary::txt_move_cursor(uint16_t line, uint16_t column)
 {
-	unsigned char cmd[6];
+	uint8_t cmd[6];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE9;
-	cmd[2] = (unsigned char)(line >> 8);
-	cmd[3] = (unsigned char)line;
-	cmd[4] = (unsigned char)(column >> 8);
-	cmd[5] = (unsigned char)column;
+	cmd[2] = (uint8_t)(line >> 8);
+	cmd[3] = (uint8_t)line;
+	cmd[4] = (uint8_t)(column >> 8);
+	cmd[5] = (uint8_t)column;
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
@@ -64,9 +64,9 @@ unsigned char 4DLibrary::txt_move_cursor(unsigned int line, unsigned int column)
 		return 1;
 }
 
-unsigned char 4DLibrary::txt_put_char(unsigned char caractere)
+uint8_t 4DLibrary::txt_put_char(uint8_t caractere)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xFE;
 	cmd[2] = 0x00;
@@ -80,10 +80,10 @@ unsigned char 4DLibrary::txt_put_char(unsigned char caractere)
 		return 1;
 }
 
-unsigned char 4DLibrary::txt_put_str(unsigned char* str)
+uint8_t 4DLibrary::txt_put_str(uint8_t* str)
 {
-	unsigned int size = strlen((unsigned char*)str);
-	unsigned char cmd[3];
+	uint16_t size = strlen((uint8_t*)str);
+	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x18;
 	cmd[2] = 0x00;
@@ -103,9 +103,9 @@ unsigned char 4DLibrary::txt_put_str(unsigned char* str)
 		return 1;
 }
 
-unsigned int 4DLibrary::txt_char_width(unsigned char car)
+uint16_t 4DLibrary::txt_char_width(uint8_t car)
 {
-	unsigned char cmd[3];
+	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x1E;
 	cmd[2] = car;
@@ -114,15 +114,15 @@ unsigned int 4DLibrary::txt_char_width(unsigned char car)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // refert to datasheet
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
 	else
 		return ( 0xFFFF ); // impossible value -> error
 }
 
-unsigned int 4DLibrary::txt_char_height(unsigned char car)
+uint16_t 4DLibrary::txt_char_height(uint8_t car)
 {
-	unsigned char cmd[3];
+	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x1D;
 	cmd[2] = car;
@@ -131,51 +131,51 @@ unsigned int 4DLibrary::txt_char_height(unsigned char car)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // refert to datasheet
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
 	}
 	else
 		return ( 0xFFFF ); // impossible value -> error
 }
 
-unsigned int 4DLibrary::txt_foreground_color(unsigned int color)
+uint16_t 4DLibrary::txt_foreground_color(uint16_t color)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE7;
-	cmd[2] = (unsigned char)(color >> 8);
-	cmd[3] = (unsigned char)color;
+	cmd[2] = (uint8_t)(color >> 8);
+	cmd[3] = (uint8_t)color;
 	
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous color
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_background_color(unsigned int color)
+uint16_t 4DLibrary::txt_background_color(uint16_t color)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE6;
-	cmd[2] = (unsigned char)(color >> 8);
-	cmd[3] = (unsigned char)color;
+	cmd[2] = (uint8_t)(color >> 8);
+	cmd[3] = (uint8_t)color;
 	
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous color
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_set_font(unsigned char font)
+uint16_t 4DLibrary::txt_set_font(uint8_t font)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE5;
 	cmd[2] = 0x00;
@@ -188,15 +188,15 @@ unsigned int 4DLibrary::txt_set_font(unsigned char font)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous font
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous font
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_width_multiplier(unsigned char multiplier)
+uint16_t 4DLibrary::txt_width_multiplier(uint8_t multiplier)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE4;
 	cmd[2] = 0x00;
@@ -209,15 +209,15 @@ unsigned int 4DLibrary::txt_width_multiplier(unsigned char multiplier)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous multiplier
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_height_multiplier(unsigned char multiplier)
+uint16_t 4DLibrary::txt_height_multiplier(uint8_t multiplier)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE3;
 	cmd[2] = 0x00;
@@ -230,15 +230,15 @@ unsigned int 4DLibrary::txt_height_multiplier(unsigned char multiplier)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous multiplier
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_x_gap(unsigned char pixel_count)
+uint16_t 4DLibrary::txt_x_gap(uint8_t pixel_count)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE2;
 	cmd[2] = 0x00;
@@ -251,15 +251,15 @@ unsigned int 4DLibrary::txt_x_gap(unsigned char pixel_count)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous x_gap
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous x_gap
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_y_gap(unsigned char pixel_count)
+uint16_t 4DLibrary::txt_y_gap(uint8_t pixel_count)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE1;
 	cmd[2] = 0x00;
@@ -272,15 +272,15 @@ unsigned int 4DLibrary::txt_y_gap(unsigned char pixel_count)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous y_gap
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous y_gap
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_bold(bool bold)
+uint16_t 4DLibrary::txt_bold(bool bold)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDE;
 	cmd[2] = 0x00;
@@ -293,15 +293,15 @@ unsigned int 4DLibrary::txt_bold(bool bold)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous bold mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous bold mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_inverse(bool inverse)
+uint16_t 4DLibrary::txt_inverse(bool inverse)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDC;
 	cmd[2] = 0x00;
@@ -314,15 +314,15 @@ unsigned int 4DLibrary::txt_inverse(bool inverse)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous inverse mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous inverse mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_italic(bool italic)
+uint16_t 4DLibrary::txt_italic(bool italic)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDD;
 	cmd[2] = 0x00;
@@ -335,15 +335,15 @@ unsigned int 4DLibrary::txt_italic(bool italic)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous italic mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous italic mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_opacity(bool opaque)
+uint16_t 4DLibrary::txt_opacity(bool opaque)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDF;
 	cmd[2] = 0x00;
@@ -356,15 +356,15 @@ unsigned int 4DLibrary::txt_opacity(bool opaque)
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous opacity mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous opacity mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+uint16_t 4DLibrary::txt_underline(bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDB;
 	cmd[2] = 0x00;
@@ -377,15 +377,15 @@ unsigned int 4DLibrary::txt_underline(bool underline) //txt_y_gap command is req
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous underline mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous underline mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+uint16_t 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDA;
 	cmd[2] = 0x00;
@@ -403,25 +403,25 @@ unsigned int 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, boo
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous attributes mode
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous attributes mode
 	}
 	else
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::txt_wrap(unsigned int wrap_pixel)
+uint16_t 4DLibrary::txt_wrap(uint16_t wrap_pixel)
 {
-	unsigned char cmd[4];
+	uint8_t cmd[4];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xD9;
-	cmd[2] = (unsigned char)(wrap_pixel>>8);
-	cmd[3] = (unsigned char)wrap_pixel; 
+	cmd[2] = (uint8_t)(wrap_pixel>>8);
+	cmd[3] = (uint8_t)wrap_pixel; 
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
 	if(cmd[0] = 0x06)
 	{
-		return( (unsigned int)(cmd[1]<<8) || cmd[2]); // previous wrap pixel
+		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous wrap pixel
 	}
 	else
 		return 0xFFFF; // error
@@ -431,7 +431,7 @@ unsigned int 4DLibrary::txt_wrap(unsigned int wrap_pixel)
 
 uint8_t 4DLibrary::gfx_clear_screen()
 {
-	unsigned char cmd[2];
+	uint8_t cmd[2];
 	cmd[0] = 0xFF;
 	cmd[1] = 0xCD;
 	
@@ -462,9 +462,9 @@ uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 }
 	
 	/*media function*/
-unsigned int 4DLibrary::media_init()
+uint16_t 4DLibrary::media_init()
 {
-	unsigned char cmd[3];
+	uint8_t cmd[3];
 	cmd[0] = 0xFF;
 	cmd[1] = 0x89; 
 		
@@ -481,15 +481,15 @@ unsigned int 4DLibrary::media_init()
 		return 0xFFFF; // error
 }
 
-unsigned int 4DLibrary::media_set_addr(uint32_t addr)
+uint16_t 4DLibrary::media_set_addr(uint32_t addr)
 {
-	unsigned char cmd[6];
+	uint8_t cmd[6];
 	cmd[0] = 0xFF;
 	cmd[1] = 0x93; 
-	cmd[2] = (unsigned char)(addr >> 24);
-	cmd[3] = (unsigned char)(addr >> 16);
-	cmd[4] = (unsigned char)(addr >> 8);
-	cmd[5] = (unsigned char)addr;
+	cmd[2] = (uint8_t)(addr >> 24);
+	cmd[3] = (uint8_t)(addr >> 16);
+	cmd[4] = (uint8_t)(addr >> 8);
+	cmd[5] = (uint8_t)addr;
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);
@@ -499,15 +499,15 @@ unsigned int 4DLibrary::media_set_addr(uint32_t addr)
 		return( 0xFFFF ); // error
 }
 
-unsigned int 4DLibrary::media_set_sector(uint32_t sector)
+uint16_t 4DLibrary::media_set_sector(uint32_t sector)
 {
-	unsigned char cmd[6];
+	uint8_t cmd[6];
 	cmd[0] = 0xFF;
 	cmd[1] = 0x92; 
-	cmd[2] = (unsigned char)(sector >> 24);
-	cmd[3] = (unsigned char)(sector >> 16);
-	cmd[4] = (unsigned char)(sector >> 8);
-	cmd[5] = (unsigned char)sector;
+	cmd[2] = (uint8_t)(sector >> 24);
+	cmd[3] = (uint8_t)(sector >> 16);
+	cmd[4] = (uint8_t)(sector >> 8);
+	cmd[5] = (uint8_t)sector;
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 1);

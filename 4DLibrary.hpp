@@ -15,50 +15,50 @@ private :
 	
 	void clear_rx_buffer();
 	
-	void write_commande(unsigned char* cmd, unsigned int size);
+	void write_commande(uint8_t* cmd, uint16_t size);
 	
-	void read_commande(unsigned char* cmd, unsigned int size);
+	void read_commande(uint8_t* cmd, uint16_t size);
 	
 public : 
 	
 	/*txt function*/
-	unsigned char txt_move_cursor(unsigned int line, unsigned int column);
+	uint8_t txt_move_cursor(uint16_t line, uint16_t column);
 	
-	unsigned char txt_put_char(unsigned char caractere);
+	uint8_t txt_put_char(uint8_t caractere);
 	
-	unsigned char txt_put_str(unsigned char* str);
+	uint8_t txt_put_str(uint8_t* str);
 	
-	unsigned int txt_char_width(unsigned char car);
+	uint16_t txt_char_width(uint8_t car);
 	
-	unsigned int txt_char_height(unsigned char car);
+	uint16_t txt_char_height(uint8_t car);
 	
-	unsigned int txt_foreground_color(unsigned int color);
+	uint16_t txt_foreground_color(uint16_t color);
 	
-	unsigned int txt_background_color(unsigned int color);
+	uint16_t txt_background_color(uint16_t color);
 	
-	unsigned int txt_set_font(unsigned char font);
+	uint16_t txt_set_font(uint8_t font);
 	
-	unsigned int txt_width_multiplier(unsigned char multiplier);
+	uint16_t txt_width_multiplier(uint8_t multiplier);
 	
-	unsigned int txt_height_multiplier(unsigned char multiplier);
+	uint16_t txt_height_multiplier(uint8_t multiplier);
 	
-	unsigned int txt_x_gap(unsigned char pixel_count);
+	uint16_t txt_x_gap(uint8_t pixel_count);
 	
-	unsigned int txt_y_gap(unsigned char pixel_count);
+	uint16_t txt_y_gap(uint8_t pixel_count);
 	
-	unsigned int txt_bold(bool bold);
+	uint16_t txt_bold(bool bold);
 	
-	unsigned int txt_inverse(bool inverse);
+	uint16_t txt_inverse(bool inverse);
 	
-	unsigned int txt_italic(bool italic);
+	uint16_t txt_italic(bool italic);
 	
-	unsigned int txt_opacity(bool opaque);
+	uint16_t txt_opacity(bool opaque);
 	
-	unsigned int txt_underline(bool underline); //txt_y_gap command is required to be at least 2 for the underline to be visible
+	uint16_t txt_underline(bool underline); //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
-	unsigned int txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+	uint16_t txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 	
-	unsigned int txt_wrap(unsigned int wrap_pixel);
+	uint16_t txt_wrap(uint16_t wrap_pixel);
 	
 	/*graphics function*/
 	
@@ -67,11 +67,11 @@ public :
 	uint8_t gfx_change_color(uint16_t old_color, uint16_t new_color);
 	
 	/*media function*/
-	unsigned int media_init();
+	uint16_t media_init();
 	
-	unsigned int media_set_addr(uint32_t addr);
+	uint16_t media_set_addr(uint32_t addr);
 	
-	unsigned int media_set_sector(uint32_t sector);
+	uint16_t media_set_sector(uint32_t sector);
 	
 };
 
