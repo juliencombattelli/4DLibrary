@@ -1217,3 +1217,66 @@ uint16_t 4DLibrary::file_file_exist(uint8_t* file_name)
 	else
 		return 0xFFFF;
 }
+
+uint16_t 4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
+{
+	uint16_t size = strlen((uint8_t*)file_name);
+	uint8_t cmd[4];
+	if(mode == 'r' | mode == 'w' | mode == 'a' | mode == 'R' | mode == 'W' | mode == 'A')
+	{
+		cmd[0] = 0x00;
+		cmd[1] = 0x0A;
+		cmd[2] = 0x00;
+		cmd[3] = mode;
+		
+		write_commande(cmd, 2);
+		write_commande(file_name, size);
+		write_commande(&(cmd[2]), 2);
+		read_commande(cmd, 3);
+		if(cmd[0] == 0x06)
+			return((cmd[1]<<8) || cmd[2]); // return handle /!\ keep it for closing file
+		else
+			return 0xFFFF;
+	}
+	else
+		return 0xFFFE; // invalid mode
+}
+
+uint16_t 4DLibrary::file_close_file(uint16_t handle)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x18; 
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+		return( 0xFFFF ); // error
+	else
+	{
+		return( (cmd[1]<<8) || cmd[2] ); // return status
+	}
+}
+
+uint16_t 4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read_file)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0x00;
+	cmd[1] = 0x0C;
+	cmd[2] = (uint8_t)(size >> 8);
+	cmd[3] = (uint8_t)size;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		read_commande(read_file,((cmd[1]<<8) || cmd[2]));
+		return((cmd[1]<<8) || cmd[2]); // return number of bytes read
+	}
+	else
+		return 0xFFFF;
+}

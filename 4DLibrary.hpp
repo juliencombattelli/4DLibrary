@@ -282,5 +282,11 @@ public :
 	uint16_t file_find_next_file_and_report(uint8_t* file_name_found);
 	
 	uint16_t file_file_exist(uint8_t* file_name);
+	
+	uint16_t file_open_file(uint8_t* file_name, uint8_t mode); // return handle /!\ keep it for closing file or other
+	
+	uint16_t file_close_file(uint16_t handle); // use the opening handle
+	
+	uint16_t file_read_file(uint16_t size, uint16_t handle, uint8_t* read_file); // use the opening handle
 };
 
