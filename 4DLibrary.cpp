@@ -1093,3 +1093,127 @@ uint16_t 4DLibrary::file_last_error()
 		return( (cmd[1] << 8) | cmd[2] );
 	}
 }
+
+uint16_t 4DLibrary::file_file_count(uint8_t* file_name)
+{
+	uint16_t size = strlen((uint8_t*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x01;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande(file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]);
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_file_count_and_display(uint8_t* file_name)
+{
+	uint16_t size = strlen((uint8_t*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x02;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande(file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]);
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
+{
+	uint16_t size = strlen((uint8_t*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x06;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande(file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]);
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found)
+{
+	uint16_t size = strlen((uint8_t*)file_name_search);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x24;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande(file_name_search, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		read_commande(file_name_found,((cmd[1]<<8) || cmd[2]));
+		return((cmd[1]<<8) || cmd[2]); // return stringlength
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_find_next_file_and_display()
+{
+	uint8_t cmd[2];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x1B;
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]); // return file exist status
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found)
+{
+	uint8_t cmd[2];
+	cmd[0] = 0x00;
+	cmd[1] = 0x25;
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		read_commande(file_name_found,((cmd[1]<<8) || cmd[2]));
+		return((cmd[1]<<8) || cmd[2]); // return stringlength
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_file_exist(uint8_t* file_name)
+{
+	uint16_t size = strlen((uint8_t*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x05;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande(file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]); // return file exist status
+	else
+		return 0xFFFF;
+}

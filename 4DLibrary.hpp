@@ -268,5 +268,19 @@ public :
 	
 	/* file function*/
 	uint16_t file_last_error();
+	
+	uint16_t file_file_count(uint8_t* file_name);
+	
+	uint16_t file_file_count_and_display(uint8_t* file_name);
+	
+	uint16_t file_find_first_file_and_display(uint8_t* file_name);
+	
+	uint16_t file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found);
+	
+	uint16_t file_find_next_file_and_display();
+	
+	uint16_t file_find_next_file_and_report(uint8_t* file_name_found);
+	
+	uint16_t file_file_exist(uint8_t* file_name);
 };
 
