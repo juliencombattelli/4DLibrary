@@ -214,9 +214,9 @@ uint8_t 4DLibrary::txt_put_char(uint8_t caractere)
 		return 1;
 }
 
-uint8_t 4DLibrary::txt_put_str(uint8_t* str)
+uint8_t 4DLibrary::txt_put_str(const int8_t* str)
 {
-	uint16_t size = strlen((uint8_t*)str);
+	uint16_t size = strlen((const char*)str);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x18;
@@ -334,7 +334,7 @@ uint16_t 4DLibrary::txt_width_multiplier(uint8_t multiplier)
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE4;
 	cmd[2] = 0x00;
-	if(font >= 1 && font <= 16)
+	if(multiplier >= 1 && multiplier <= 16)
 		cmd[3] = multiplier; 
 	else
 		return( 0xFFFE ); // invalid multiplier
@@ -355,7 +355,7 @@ uint16_t 4DLibrary::txt_height_multiplier(uint8_t multiplier)
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE3;
 	cmd[2] = 0x00;
-	if(font >= 1 && font <= 16)
+	if(multiplier >= 1 && multiplier <= 16)
 		cmd[3] = multiplier; 
 	else
 		return( 0xFFFE ); // invalid multiplier
@@ -376,7 +376,7 @@ uint16_t 4DLibrary::txt_x_gap(uint8_t pixel_count)
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE2;
 	cmd[2] = 0x00;
-	if(font >= 0 && font <= 32)
+	if(pixel_count >= 0 && pixel_count <= 32)
 		cmd[3] = pixel_count; 
 	else
 		return( 0xFFFE ); // invalid multiplier
@@ -397,7 +397,7 @@ uint16_t 4DLibrary::txt_y_gap(uint8_t pixel_count)
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE1;
 	cmd[2] = 0x00;
-	if(font >= 1 && font <= 32)
+	if(pixel_count >= 1 && pixel_count <= 32)
 		cmd[3] = pixel_count; 
 	else
 		return( 0xFFFE ); // invalid multiplier
@@ -1267,8 +1267,8 @@ uint16_t 4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read
 	cmd[1] = 0x0C;
 	cmd[2] = (uint8_t)(size >> 8);
 	cmd[3] = (uint8_t)size;
-	cmd[2] = (uint8_t)(handle >> 8);
-	cmd[3] = (uint8_t)handle;
+	cmd[4] = (uint8_t)(handle >> 8);
+	cmd[5] = (uint8_t)handle;
 	
 	write_commande(cmd, 6);
 	read_commande(cmd, 3);
@@ -1276,6 +1276,73 @@ uint16_t 4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read
 	{
 		read_commande(read_file,((cmd[1]<<8) || cmd[2]));
 		return((cmd[1]<<8) || cmd[2]); // return number of bytes read
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_file_seek(uint16_t handle, uint32_t byte_position)
+{
+	uint8_t cmd[8];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x16;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	cmd[4] = (uint8_t)(byte_position >> 24);
+	cmd[5] = (uint8_t)(byte_position >> 16);
+	cmd[6] = (uint8_t)(byte_position >> 8);
+	cmd[7] = (uint8_t)byte_position;
+	
+	write_commande(cmd, 8);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return status
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, uint16_t records_number)
+{
+	uint8_t cmd[10];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x15;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	cmd[4] = (uint8_t)(byte_position >> 24);
+	cmd[5] = (uint8_t)(byte_position >> 16);
+	cmd[6] = (uint8_t)(byte_position >> 8);
+	cmd[7] = (uint8_t)byte_position;
+	cmd[8] = (uint8_t)(records_number >> 8);
+	cmd[9] = (uint8_t)records_number;
+	
+	write_commande(cmd, 10);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return status
+	}
+	else
+		return 0xFFFF;
+}
+
+uint32_t 4DLibrary::file_file_index(uint16_t handle)
+{
+	uint8_t cmd[7];
+	cmd[0] = 0x00;
+	cmd[1] = 0x0F;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 7);
+	if(cmd[0] == 0x06)
+	{
+		if(((cmd[1]<<8) || cmd[2]) == 0x0001)
+			return((cmd[1]<<8) || cmd[2]); // return current index pointer
+		else
+			return 0xFFFF;
 	}
 	else
 		return 0xFFFF;

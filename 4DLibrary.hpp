@@ -179,7 +179,7 @@ public :
 	
 	uint8_t txt_put_char(uint8_t caractere);
 	
-	uint8_t txt_put_str(uint8_t* str);
+	uint8_t txt_put_str(const int8_t* str);
 	
 	uint16_t txt_char_width(uint8_t car);
 	
@@ -288,5 +288,11 @@ public :
 	uint16_t file_close_file(uint16_t handle); // use the opening handle
 	
 	uint16_t file_read_file(uint16_t size, uint16_t handle, uint8_t* read_file); // use the opening handle
+	
+	uint16_t file_file_seek(uint16_t handle, uint32_t byte_position); // use the opening handle
+	
+	uint16_t file_file_index(uint16_t handle, uint32_t record_size, uint16_t records_number); // use the opening handle
+	
+	uint32_t file_file_index(uint16_t handle); // use the opening handle
 };
 
