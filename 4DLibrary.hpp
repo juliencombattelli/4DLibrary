@@ -294,5 +294,21 @@ public :
 	uint16_t file_file_index(uint16_t handle, uint32_t record_size, uint16_t records_number); // use the opening handle
 	
 	uint32_t file_file_index(uint16_t handle); // use the opening handle
+	
+	uint16_t file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file); // use the opening handle
+	
+	uint32_t file_file_size(uint16_t handle); // use the opening handle
+	
+	uint16_t file_display_image(uint16_t handle, uint16_t x, uint16_t y); // use the opening handle
+	
+	uint16_t file_screen_capture(uint16_t handle, uint16_t x, uint16_t y, uint16_t width, uint16_t height); // use the opening handle
+	
+	uint16_t file_write_char_to_file(uint16_t handle, uint8_t charactere); // use the opening handle
+	
+	uint8_t file_read_char_to_file(uint16_t handle); // use the opening handle
+	
+	uint16_t file_write_word_to_file(uint16_t handle, uint16_t word); // use the opening handle
+	
+	uint16_t file_read_word_to_file(uint16_t handle); // use the opening handle
 };
 

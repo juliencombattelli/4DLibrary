@@ -1340,9 +1340,180 @@ uint32_t 4DLibrary::file_file_index(uint16_t handle)
 	if(cmd[0] == 0x06)
 	{
 		if(((cmd[1]<<8) || cmd[2]) == 0x0001)
-			return((cmd[1]<<8) || cmd[2]); // return current index pointer
+			return((cmd[3]<<24) || (cmd[4]<<16) || (cmd[5]<<8) || cmd[6]); // return current index pointer
 		else
 			return 0xFFFF;
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file)
+{
+	uint16_t size = strlen((const char*)write_file);
+	uint8_t cmd[4];
+	cmd[0] = 0x00;
+	cmd[1] = 0x10;
+	cmd[2] = (uint8_t)(size >> 8);
+	cmd[3] = (uint8_t)size;
+	write_commande(cmd, 4);
+	write_commande(str, size);
+	cmd[0] = (uint8_t)(handle >> 8);
+	cmd[1] = (uint8_t)handle;
+	
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		if(((cmd[1]<<8) || cmd[2]) == size)
+			return 0xFFFF;
+		else
+			return 0;
+	}
+	else
+		return 0xFFFF;
+}
+
+uint32_t 4DLibrary::file_file_size(uint16_t handle)
+{
+	uint8_t cmd[7];
+	cmd[0] = 0x00;
+	cmd[1] = 0x0E;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 7);
+	if(cmd[0] == 0x06)
+	{
+		if(((cmd[1]<<8) || cmd[2]) == 0x0001)
+			return((cmd[3]<<24) || (cmd[4]<<16) || (cmd[5]<<8) || cmd[6]); // return file size
+		else
+			return 0xFFFF;
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_display_image(uint16_t handle, uint16_t x, uint16_t y)
+{
+	uint8_t cmd[8];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x11;
+	cmd[2] = (uint8_t)(x >> 8);
+	cmd[3] = (uint8_t)x;
+	cmd[4] = (uint8_t)(y >> 8);
+	cmd[5] = (uint8_t)y;
+	cmd[6] = (uint8_t)(handle >> 8);
+	cmd[7] = (uint8_t)handle;
+	
+	write_commande(cmd, 8);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return code error
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_screen_capture(uint16_t handle, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+{
+	uint8_t cmd[12];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x10;
+	cmd[2] = (uint8_t)(x >> 8);
+	cmd[3] = (uint8_t)x;
+	cmd[4] = (uint8_t)(y >> 8);
+	cmd[5] = (uint8_t)y;
+	cmd[6] = (uint8_t)(width >> 8);
+	cmd[7] = (uint8_t)width;
+	cmd[8] = (uint8_t)(height >> 8);
+	cmd[9] = (uint8_t)height;
+	cmd[10] = (uint8_t)(handle >> 8);
+	cmd[11] = (uint8_t)handle;
+	
+	write_commande(cmd, 12);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return code error, 0 if success
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_write_char_to_file(uint16_t handle, uint8_t charactere)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x11;
+	cmd[2] = 0x00;
+	cmd[3] = (uint8_t)charactere;
+	cmd[4] = (uint8_t)(handle >> 8);
+	cmd[5] = (uint8_t)handle;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return status
+	}
+	else
+		return 0xFFFF;
+}
+
+uint8_t 4DLibrary::file_read_char_to_file(uint16_t handle)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x0E;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return(cmd[2]); // return charactere
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x0D;
+	cmd[2] = (uint8_t)(word >> 8);;
+	cmd[3] = (uint8_t)word;
+	cmd[4] = (uint8_t)(handle >> 8);
+	cmd[5] = (uint8_t)handle;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return status
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t 4DLibrary::file_read_word_to_file(uint16_t handle)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x0C;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return((cmd[1]<<8) || cmd[2]); // return word
 	}
 	else
 		return 0xFFFF;
