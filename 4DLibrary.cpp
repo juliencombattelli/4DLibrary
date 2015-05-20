@@ -1,12 +1,12 @@
 /*
-* 4DLibrary.cpp
-* This file is a part of 4DLibrary
+* uLCD_4DLibrary.cpp
+* This file is a part of uLCD_4DLibrary
 * Copyright (c) 2015 juliencombattelli, SRTH
 */
 
-#include "4DLibrary.hpp"
+#include "uLCD_4DLibrary.hpp"
 
-4DLibrary::4DLibrary(PinName tx, PinName rx, PinName reset) : m_serial(tx, rx), m_rst(reset)
+uLCD_4DLibrary::uLCD_4DLibrary(PinName tx, PinName rx, PinName reset) : m_serial(tx, rx), m_rst(reset)
 {
 	clear_rx_buffer();
 }
@@ -15,7 +15,7 @@
 * private function
 */
 
-void 4DLibrary::clear_rx_buffer()
+void uLCD_4DLibrary::clear_rx_buffer()
 {
 	while(m_serial.readable())
 	{
@@ -23,7 +23,7 @@ void 4DLibrary::clear_rx_buffer()
 	}
 }
 
-void 4DLibrary::write_commande(uint8_t* cmd, uint16_t size)
+void uLCD_4DLibrary::write_commande(uint8_t* cmd, uint16_t size)
 {
 	for(uint8_t i = 0; i < size; i++)
 	{
@@ -32,7 +32,7 @@ void 4DLibrary::write_commande(uint8_t* cmd, uint16_t size)
 	}
 }
 
-void 4DLibrary::read_commande(uint8_t* cmd, uint16_t size)
+void uLCD_4DLibrary::read_commande(uint8_t* cmd, uint16_t size)
 {
 	for(uint8_t i = 0; i < size; i++)
 	{
@@ -42,7 +42,7 @@ void 4DLibrary::read_commande(uint8_t* cmd, uint16_t size)
 }
 
 	/*media function*/
-uint16_t 4DLibrary::media_flush()
+uint16_t uLCD_4DLibrary::media_flush()
 {
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
@@ -63,7 +63,7 @@ uint16_t 4DLibrary::media_flush()
 }
 
 	/*UART function*/
-uint8_t 4DLibrary::code_baud_rate(uint32_t baud_rate)
+uint8_t uLCD_4DLibrary::code_baud_rate(uint32_t baud_rate)
 {
 	switch(baud_rate)
 	{
@@ -180,7 +180,7 @@ uint8_t 4DLibrary::code_baud_rate(uint32_t baud_rate)
 */
 
 	/*txt function*/
-uint8_t 4DLibrary::txt_move_cursor(uint16_t line, uint16_t column)
+uint8_t uLCD_4DLibrary::txt_move_cursor(uint16_t line, uint16_t column)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -198,7 +198,7 @@ uint8_t 4DLibrary::txt_move_cursor(uint16_t line, uint16_t column)
 		return 1;
 }
 
-uint8_t 4DLibrary::txt_put_char(uint8_t caractere)
+uint8_t uLCD_4DLibrary::txt_put_char(uint8_t caractere)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -214,7 +214,7 @@ uint8_t 4DLibrary::txt_put_char(uint8_t caractere)
 		return 1;
 }
 
-uint8_t 4DLibrary::txt_put_str(const int8_t* str)
+uint8_t uLCD_4DLibrary::txt_put_str(const int8_t* str)
 {
 	uint16_t size = strlen((const char*)str);
 	uint8_t cmd[3];
@@ -237,7 +237,7 @@ uint8_t 4DLibrary::txt_put_str(const int8_t* str)
 		return 1;
 }
 
-uint16_t 4DLibrary::txt_char_width(uint8_t car)
+uint16_t uLCD_4DLibrary::txt_char_width(uint8_t car)
 {
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
@@ -254,7 +254,7 @@ uint16_t 4DLibrary::txt_char_width(uint8_t car)
 		return ( 0xFFFF ); // impossible value -> error
 }
 
-uint16_t 4DLibrary::txt_char_height(uint8_t car)
+uint16_t uLCD_4DLibrary::txt_char_height(uint8_t car)
 {
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
@@ -271,7 +271,7 @@ uint16_t 4DLibrary::txt_char_height(uint8_t car)
 		return ( 0xFFFF ); // impossible value -> error
 }
 
-uint16_t 4DLibrary::txt_foreground_color(uint16_t color)
+uint16_t uLCD_4DLibrary::txt_foreground_color(uint16_t color)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -289,7 +289,7 @@ uint16_t 4DLibrary::txt_foreground_color(uint16_t color)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_background_color(uint16_t color)
+uint16_t uLCD_4DLibrary::txt_background_color(uint16_t color)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -307,7 +307,7 @@ uint16_t 4DLibrary::txt_background_color(uint16_t color)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_set_font(uint8_t font)
+uint16_t uLCD_4DLibrary::txt_set_font(uint8_t font)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -328,7 +328,7 @@ uint16_t 4DLibrary::txt_set_font(uint8_t font)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_width_multiplier(uint8_t multiplier)
+uint16_t uLCD_4DLibrary::txt_width_multiplier(uint8_t multiplier)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -349,7 +349,7 @@ uint16_t 4DLibrary::txt_width_multiplier(uint8_t multiplier)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_height_multiplier(uint8_t multiplier)
+uint16_t uLCD_4DLibrary::txt_height_multiplier(uint8_t multiplier)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -370,7 +370,7 @@ uint16_t 4DLibrary::txt_height_multiplier(uint8_t multiplier)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_x_gap(uint8_t pixel_count)
+uint16_t uLCD_4DLibrary::txt_x_gap(uint8_t pixel_count)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -391,7 +391,7 @@ uint16_t 4DLibrary::txt_x_gap(uint8_t pixel_count)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_y_gap(uint8_t pixel_count)
+uint16_t uLCD_4DLibrary::txt_y_gap(uint8_t pixel_count)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -412,7 +412,7 @@ uint16_t 4DLibrary::txt_y_gap(uint8_t pixel_count)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_bold(bool bold)
+uint16_t uLCD_4DLibrary::txt_bold(bool bold)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -433,7 +433,7 @@ uint16_t 4DLibrary::txt_bold(bool bold)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_inverse(bool inverse)
+uint16_t uLCD_4DLibrary::txt_inverse(bool inverse)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -454,7 +454,7 @@ uint16_t 4DLibrary::txt_inverse(bool inverse)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_italic(bool italic)
+uint16_t uLCD_4DLibrary::txt_italic(bool italic)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -475,7 +475,7 @@ uint16_t 4DLibrary::txt_italic(bool italic)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_opacity(bool opaque)
+uint16_t uLCD_4DLibrary::txt_opacity(bool opaque)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -496,7 +496,7 @@ uint16_t 4DLibrary::txt_opacity(bool opaque)
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_underline(bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+uint16_t uLCD_4DLibrary::txt_underline(bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -517,7 +517,7 @@ uint16_t 4DLibrary::txt_underline(bool underline) //txt_y_gap command is require
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
+uint16_t uLCD_4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool underline) //txt_y_gap command is required to be at least 2 for the underline to be visible
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -543,7 +543,7 @@ uint16_t 4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bool un
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::txt_wrap(uint16_t wrap_pixel)
+uint16_t uLCD_4DLibrary::txt_wrap(uint16_t wrap_pixel)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -563,7 +563,7 @@ uint16_t 4DLibrary::txt_wrap(uint16_t wrap_pixel)
 
 	/*graphics function*/
 
-uint8_t 4DLibrary::gfx_clear_screen()
+uint8_t uLCD_4DLibrary::gfx_clear_screen()
 {
 	uint8_t cmd[2];
 	cmd[0] = 0xFF;
@@ -577,7 +577,7 @@ uint8_t 4DLibrary::gfx_clear_screen()
 		return 1;
 }	
 
-uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
+uint8_t uLCD_4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -595,7 +595,7 @@ uint8_t 4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
 	uint8_t cmd[10];
 	cmd[0] = 0xFF;
@@ -617,7 +617,7 @@ uint8_t 4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
 	uint8_t cmd[10];
 	cmd[0] = 0xFF;
@@ -639,7 +639,7 @@ uint8_t 4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, 
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
 	uint8_t cmd[12];
 	cmd[0] = 0xFF;
@@ -663,7 +663,7 @@ uint8_t 4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
 	uint8_t cmd[12];
 	cmd[0] = 0xFF;
@@ -687,7 +687,7 @@ uint8_t 4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uin
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
 	uint8_t cmd[12];
 	cmd[0] = 0xFF;
@@ -711,7 +711,7 @@ uint8_t 4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t 
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
 	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
 						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
@@ -738,7 +738,7 @@ uint8_t 4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
 	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
 						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
@@ -765,7 +765,7 @@ uint8_t 4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_a
 		return 1;
 }
 
-uint8_t 4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
 	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
 						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
@@ -793,7 +793,7 @@ uint8_t 4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16
 }
 	
 	/*media function*/
-uint16_t 4DLibrary::media_init()
+uint16_t uLCD_4DLibrary::media_init()
 {
 	uint8_t cmd[3];
 	cmd[0] = 0xFF;
@@ -812,7 +812,7 @@ uint16_t 4DLibrary::media_init()
 		return 0xFFFF; // error
 }
 
-uint16_t 4DLibrary::media_set_addr(uint32_t addr)
+uint16_t uLCD_4DLibrary::media_set_addr(uint32_t addr)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -830,7 +830,7 @@ uint16_t 4DLibrary::media_set_addr(uint32_t addr)
 		return( 0xFFFF ); // error
 }
 
-uint16_t 4DLibrary::media_set_sector(uint32_t sector)
+uint16_t uLCD_4DLibrary::media_set_sector(uint32_t sector)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -848,7 +848,7 @@ uint16_t 4DLibrary::media_set_sector(uint32_t sector)
 		return( 0xFFFF ); // error
 }
 
-uint16_t 4DLibrary::media_read_sector(uint8_t* sector)
+uint16_t uLCD_4DLibrary::media_read_sector(uint8_t* sector)
 {
 	uint8_t cmd[2];
 	cmd[0] = 0x00;
@@ -871,7 +871,7 @@ uint16_t 4DLibrary::media_read_sector(uint8_t* sector)
 	}
 }
 
-uint16_t 4DLibrary::media_write_sector(uint8_t* sector)
+uint16_t uLCD_4DLibrary::media_write_sector(uint8_t* sector)
 {
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
@@ -893,7 +893,7 @@ uint16_t 4DLibrary::media_write_sector(uint8_t* sector)
 	}
 }
 
-uint16_t 4DLibrary::media_read_byte()
+uint16_t uLCD_4DLibrary::media_read_byte()
 {
 	uint8_t cmd[2];
 	cmd[0] = 0xFF;
@@ -910,7 +910,7 @@ uint16_t 4DLibrary::media_read_byte()
 	}
 }
 
-uint16_t 4DLibrary::media_read_word()
+uint16_t uLCD_4DLibrary::media_read_word()
 {
 	uint8_t cmd[2];
 	cmd[0] = 0xFF;
@@ -927,7 +927,7 @@ uint16_t 4DLibrary::media_read_word()
 	}
 }
 
-uint16_t 4DLibrary::media_write_byte(uint8_t byte)
+uint16_t uLCD_4DLibrary::media_write_byte(uint8_t byte)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0x00;
@@ -950,7 +950,7 @@ uint16_t 4DLibrary::media_write_byte(uint8_t byte)
 	}
 }
 
-uint16_t 4DLibrary::media_write_word(uint16_t word)
+uint16_t uLCD_4DLibrary::media_write_word(uint16_t word)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0x00;
@@ -973,7 +973,7 @@ uint16_t 4DLibrary::media_write_word(uint16_t word)
 	}
 }
 
-uint16_t 4DLibrary::media_display_image(uint16_t x, uint16_t y)
+uint16_t uLCD_4DLibrary::media_display_image(uint16_t x, uint16_t y)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0x00;
@@ -993,7 +993,7 @@ uint16_t 4DLibrary::media_display_image(uint16_t x, uint16_t y)
 	}
 }
 
-uint16_t 4DLibrary::media_display_video(uint16_t x, uint16_t y)
+uint16_t uLCD_4DLibrary::media_display_video(uint16_t x, uint16_t y)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0x00;
@@ -1013,7 +1013,7 @@ uint16_t 4DLibrary::media_display_video(uint16_t x, uint16_t y)
 	}
 }
 
-uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t frame_number)
+uint16_t uLCD_4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t frame_number)
 {
 	uint8_t cmd[8];
 	cmd[0] = 0x00;
@@ -1036,7 +1036,7 @@ uint16_t 4DLibrary::media_display_video_frame(uint16_t x, uint16_t y, uint16_t f
 }
 
 	/* UART function*/
-uint16_t 4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
+uint16_t uLCD_4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0x00;
@@ -1059,7 +1059,7 @@ uint16_t 4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 }
 
 	/* timer function*/
-uint16_t 4DLibrary::timer_sleep_systeme(uint16_t units)
+uint16_t uLCD_4DLibrary::timer_sleep_systeme(uint16_t units)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -1078,7 +1078,7 @@ uint16_t 4DLibrary::timer_sleep_systeme(uint16_t units)
 }
 
 	/* file function*/
-uint16_t 4DLibrary::file_last_error()
+uint16_t uLCD_4DLibrary::file_last_error()
 {
 	uint8_t cmd[3];
 	cmd[0] = 0xFF;
@@ -1094,7 +1094,7 @@ uint16_t 4DLibrary::file_last_error()
 	}
 }
 
-uint16_t 4DLibrary::file_file_count(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
 {
 	uint16_t size = strlen((uint8_t*)file_name);
 	uint8_t cmd[3];
@@ -1112,7 +1112,7 @@ uint16_t 4DLibrary::file_file_count(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_file_count_and_display(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
 {
 	uint16_t size = strlen((uint8_t*)file_name);
 	uint8_t cmd[3];
@@ -1130,7 +1130,7 @@ uint16_t 4DLibrary::file_file_count_and_display(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 {
 	uint16_t size = strlen((uint8_t*)file_name);
 	uint8_t cmd[3];
@@ -1148,7 +1148,7 @@ uint16_t 4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found)
+uint16_t uLCD_4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found)
 {
 	uint16_t size = strlen((uint8_t*)file_name_search);
 	uint8_t cmd[3];
@@ -1169,7 +1169,7 @@ uint16_t 4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, u
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_find_next_file_and_display()
+uint16_t uLCD_4DLibrary::file_find_next_file_and_display()
 {
 	uint8_t cmd[2];
 	cmd[0] = 0xFF;
@@ -1183,7 +1183,7 @@ uint16_t 4DLibrary::file_find_next_file_and_display()
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found)
+uint16_t uLCD_4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found)
 {
 	uint8_t cmd[2];
 	cmd[0] = 0x00;
@@ -1200,7 +1200,7 @@ uint16_t 4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_file_exist(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
 {
 	uint16_t size = strlen((uint8_t*)file_name);
 	uint8_t cmd[3];
@@ -1218,7 +1218,7 @@ uint16_t 4DLibrary::file_file_exist(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
+uint16_t uLCD_4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
 {
 	uint16_t size = strlen((uint8_t*)file_name);
 	uint8_t cmd[4];
@@ -1242,7 +1242,7 @@ uint16_t 4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
 		return 0xFFFE; // invalid mode
 }
 
-uint16_t 4DLibrary::file_close_file(uint16_t handle)
+uint16_t uLCD_4DLibrary::file_close_file(uint16_t handle)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -1260,7 +1260,7 @@ uint16_t 4DLibrary::file_close_file(uint16_t handle)
 	}
 }
 
-uint16_t 4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read_file)
+uint16_t uLCD_4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read_file)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0x00;
@@ -1281,7 +1281,7 @@ uint16_t 4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t* read
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_file_seek(uint16_t handle, uint32_t byte_position)
+uint16_t uLCD_4DLibrary::file_file_seek(uint16_t handle, uint32_t byte_position)
 {
 	uint8_t cmd[8];
 	cmd[0] = 0xFF;
@@ -1303,7 +1303,7 @@ uint16_t 4DLibrary::file_file_seek(uint16_t handle, uint32_t byte_position)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, uint16_t records_number)
+uint16_t uLCD_4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, uint16_t records_number)
 {
 	uint8_t cmd[10];
 	cmd[0] = 0xFF;
@@ -1327,7 +1327,7 @@ uint16_t 4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, uint1
 		return 0xFFFF;
 }
 
-uint32_t 4DLibrary::file_file_index(uint16_t handle)
+uint32_t uLCD_4DLibrary::file_file_index(uint16_t handle)
 {
 	uint8_t cmd[7];
 	cmd[0] = 0x00;
@@ -1348,7 +1348,7 @@ uint32_t 4DLibrary::file_file_index(uint16_t handle)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file)
+uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file)
 {
 	uint16_t size = strlen((const char*)write_file);
 	uint8_t cmd[4];
@@ -1374,7 +1374,7 @@ uint16_t 4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* wri
 		return 0xFFFF;
 }
 
-uint32_t 4DLibrary::file_file_size(uint16_t handle)
+uint32_t uLCD_4DLibrary::file_file_size(uint16_t handle)
 {
 	uint8_t cmd[7];
 	cmd[0] = 0x00;
@@ -1395,7 +1395,7 @@ uint32_t 4DLibrary::file_file_size(uint16_t handle)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_display_image(uint16_t handle, uint16_t x, uint16_t y)
+uint16_t uLCD_4DLibrary::file_display_image(uint16_t handle, uint16_t x, uint16_t y)
 {
 	uint8_t cmd[8];
 	cmd[0] = 0xFF;
@@ -1417,7 +1417,7 @@ uint16_t 4DLibrary::file_display_image(uint16_t handle, uint16_t x, uint16_t y)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_screen_capture(uint16_t handle, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+uint16_t uLCD_4DLibrary::file_screen_capture(uint16_t handle, uint16_t x, uint16_t y, uint16_t width, uint16_t height)
 {
 	uint8_t cmd[12];
 	cmd[0] = 0xFF;
@@ -1443,7 +1443,7 @@ uint16_t 4DLibrary::file_screen_capture(uint16_t handle, uint16_t x, uint16_t y,
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_write_char_to_file(uint16_t handle, uint8_t charactere)
+uint16_t uLCD_4DLibrary::file_write_char_to_file(uint16_t handle, uint8_t charactere)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -1463,7 +1463,7 @@ uint16_t 4DLibrary::file_write_char_to_file(uint16_t handle, uint8_t charactere)
 		return 0xFFFF;
 }
 
-uint8_t 4DLibrary::file_read_char_to_file(uint16_t handle)
+uint8_t uLCD_4DLibrary::file_read_char_to_file(uint16_t handle)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;
@@ -1481,7 +1481,7 @@ uint8_t 4DLibrary::file_read_char_to_file(uint16_t handle)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
+uint16_t uLCD_4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
 {
 	uint8_t cmd[6];
 	cmd[0] = 0xFF;
@@ -1501,7 +1501,7 @@ uint16_t 4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
 		return 0xFFFF;
 }
 
-uint16_t 4DLibrary::file_read_word_to_file(uint16_t handle)
+uint16_t uLCD_4DLibrary::file_read_word_to_file(uint16_t handle)
 {
 	uint8_t cmd[4];
 	cmd[0] = 0xFF;

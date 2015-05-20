@@ -1,6 +1,6 @@
 /*
-* 4DLibrary.hpp
-* This file is a part of 4DLibrary
+* uLCD_4DLibrary.hpp
+* This file is a part of uLCD_4DLibrary
 * Copyright (c) 2015 juliencombattelli, SRTH
 */
 
@@ -153,7 +153,7 @@ namespace Color
 	}
 }
 
-class 4DLibrary
+class uLCD_4DLibrary
 {
 private :
 	
