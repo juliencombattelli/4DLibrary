@@ -175,7 +175,7 @@ private :
 public : 
 	
 	/*Constructors*/
-	uLCD_4DLibrary(PinName tx, PinName rx, PinName reset);
+	uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t baudrate);
 	
 	/*txt function*/
 	uint8_t txt_move_cursor(uint16_t line, uint16_t column);

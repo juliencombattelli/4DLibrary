@@ -4,10 +4,11 @@
 * Copyright (c) 2015 juliencombattelli, SRTH
 */
 
-#include "uLCD_4DLibrary.hpp"
+#include "4DLibrary.hpp"
 
-uLCD_4DLibrary::uLCD_4DLibrary(PinName tx, PinName rx, PinName reset) : m_serial(tx, rx), m_rst(reset)
+uLCD_4DLibrary::uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t baud_rate) : m_serial(tx, rx), m_rst(reset)
 {
+	m_serial.baud(baud_rate);
 	clear_rx_buffer();
 }
 
@@ -63,7 +64,7 @@ uint16_t uLCD_4DLibrary::media_flush()
 }
 
 	/*UART function*/
-uint8_t uLCD_4DSystems::code_baud_rate(uint32_t baud_rate)
+uint8_t uLCD_4DLibrary::code_baud_rate(uint32_t baud_rate)
 {
     switch(baud_rate)
     {
@@ -139,7 +140,7 @@ uint8_t uLCD_4DLibrary::txt_put_str(const int8_t* str)
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(str, size);
+	write_commande((uint8_t*)str, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -232,7 +233,7 @@ uint16_t uLCD_4DLibrary::txt_set_font(uint8_t font)
 	if(font > 0 && font < 4)
 		cmd[3] = font - 1; // adaptation for font id
 	else
-		return( 0x0xFFFE ); // invalid font
+		return( 0xFFFE ); // invalid font
 		
 	write_commande(cmd, 4);
 	read_commande(cmd, 3);
@@ -439,7 +440,7 @@ uint16_t uLCD_4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bo
 	cmd[0] = 0xFF;
 	cmd[1] = 0xDA;
 	cmd[2] = 0x00;
-	cmd[3] = 0x00
+	cmd[3] = 0x00;
 	if(bold == true)
 		cmd[3] = cmd[3] | (0x01 << 4);
 	if(italic == true)
@@ -479,7 +480,7 @@ uint16_t uLCD_4DLibrary::txt_wrap(uint16_t wrap_pixel)
 
 	/*graphics function*/
 
-uint8_t uLCD_4DSystems::gfx_clear_screen()
+uint8_t uLCD_4DLibrary::gfx_clear_screen()
 {
     uint8_t cmd[2];
     cmd[0] = 0xFF;
@@ -493,7 +494,7 @@ uint8_t uLCD_4DSystems::gfx_clear_screen()
         return 1; // error
 }   
 
-uint8_t uLCD_4DSystems::gfx_change_color(uint16_t old_color, uint16_t new_color)
+uint8_t uLCD_4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
 {
     uint8_t cmd[6];
     cmd[0] = 0xFF;
@@ -511,7 +512,7 @@ uint8_t uLCD_4DSystems::gfx_change_color(uint16_t old_color, uint16_t new_color)
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
     uint8_t cmd[10];
     cmd[0] = 0xFF;
@@ -533,7 +534,7 @@ uint8_t uLCD_4DSystems::gfx_draw_circle(uint16_t center_x, uint16_t center_y, ui
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
     uint8_t cmd[10];
     cmd[0] = 0xFF;
@@ -555,7 +556,7 @@ uint8_t uLCD_4DSystems::gfx_draw_filled_circle(uint16_t center_x, uint16_t cente
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
     uint8_t cmd[12];
     cmd[0] = 0xFF;
@@ -579,7 +580,7 @@ uint8_t uLCD_4DSystems::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uin
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
     uint8_t cmd[12];
     cmd[0] = 0xFF;
@@ -603,7 +604,7 @@ uint8_t uLCD_4DSystems::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
     uint8_t cmd[12];
     cmd[0] = 0xFF;
@@ -627,7 +628,7 @@ uint8_t uLCD_4DSystems::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
     uint32_t array_size = n*sizeof(uint16_t);
     uint32_t cmd_size = 4+array_size*2+2;
@@ -653,7 +654,7 @@ uint8_t uLCD_4DSystems::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
     uint32_t array_size = n*sizeof(uint16_t);
     uint32_t cmd_size = 4+array_size*2+2;
@@ -679,7 +680,7 @@ uint8_t uLCD_4DSystems::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
     uint32_t array_size = n*sizeof(uint16_t);
     uint32_t cmd_size = 4+array_size*2+2;
@@ -705,7 +706,7 @@ uint8_t uLCD_4DSystems::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, u
         return 1; // error
 }
 
-uint8_t uLCD_4DSystems::gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t colour)
 {
     uint8_t cmd[16];
     cmd[0] = 0xFF;
@@ -744,7 +745,7 @@ uint16_t uLCD_4DLibrary::media_init()
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		if(cmd[3] == 0x01)
+		if(cmd[2] == 0x01)
 			return( 0x00 );
 		else
 			return( 0xFFFE); // no card is presentor not able to initialise.
@@ -791,7 +792,7 @@ uint16_t uLCD_4DLibrary::media_set_sector(uint32_t sector)
 
 uint16_t uLCD_4DLibrary::media_read_sector(uint8_t* sector)
 {
-	uint8_t cmd[2];
+	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x16; 
 	
@@ -993,6 +994,7 @@ uint16_t uLCD_4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 		else
 		{
 			return( 0x00 );
+			m_serial.baud(baud_rate);
 		}
 	}
 	else
@@ -1037,7 +1039,7 @@ uint16_t uLCD_4DLibrary::file_last_error()
 
 uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
 {
-	uint16_t size = strlen((uint8_t*)file_name);
+	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x01;
@@ -1055,7 +1057,7 @@ uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
 
 uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
 {
-	uint16_t size = strlen((uint8_t*)file_name);
+	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x02;
@@ -1073,7 +1075,7 @@ uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
 
 uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 {
-	uint16_t size = strlen((uint8_t*)file_name);
+	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x06;
@@ -1091,7 +1093,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 
 uint16_t uLCD_4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found)
 {
-	uint16_t size = strlen((uint8_t*)file_name_search);
+	uint16_t size = strlen((const char*)file_name_search);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x24;
@@ -1112,7 +1114,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_report(uint8_t* file_name_sear
 
 uint16_t uLCD_4DLibrary::file_find_next_file_and_display()
 {
-	uint8_t cmd[2];
+	uint8_t cmd[3];
 	cmd[0] = 0xFF;
 	cmd[1] = 0x1B;
 	
@@ -1126,7 +1128,7 @@ uint16_t uLCD_4DLibrary::file_find_next_file_and_display()
 
 uint16_t uLCD_4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found)
 {
-	uint8_t cmd[2];
+	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x25;
 	
@@ -1143,7 +1145,7 @@ uint16_t uLCD_4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found
 
 uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
 {
-	uint16_t size = strlen((uint8_t*)file_name);
+	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
 	cmd[0] = 0x00;
 	cmd[1] = 0x05;
@@ -1161,7 +1163,7 @@ uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
 
 uint16_t uLCD_4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
 {
-	uint16_t size = strlen((uint8_t*)file_name);
+	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[4];
 	if(mode == 'r' | mode == 'w' | mode == 'a' | mode == 'R' | mode == 'W' | mode == 'A')
 	{
@@ -1251,10 +1253,10 @@ uint16_t uLCD_4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, 
 	cmd[1] = 0x15;
 	cmd[2] = (uint8_t)(handle >> 8);
 	cmd[3] = (uint8_t)handle;
-	cmd[4] = (uint8_t)(byte_position >> 24);
-	cmd[5] = (uint8_t)(byte_position >> 16);
-	cmd[6] = (uint8_t)(byte_position >> 8);
-	cmd[7] = (uint8_t)byte_position;
+	cmd[4] = (uint8_t)(record_size >> 24);
+	cmd[5] = (uint8_t)(record_size >> 16);
+	cmd[6] = (uint8_t)(record_size >> 8);
+	cmd[7] = (uint8_t)record_size;
 	cmd[8] = (uint8_t)(records_number >> 8);
 	cmd[9] = (uint8_t)records_number;
 	
@@ -1291,14 +1293,14 @@ uint32_t uLCD_4DLibrary::file_file_index(uint16_t handle)
 
 uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file)
 {
-	uint16_t size = strlen((const char*)write_file);
+	uint16_t sizes = strlen((const char*)write_file);
 	uint8_t cmd[4];
 	cmd[0] = 0x00;
 	cmd[1] = 0x10;
 	cmd[2] = (uint8_t)(size >> 8);
 	cmd[3] = (uint8_t)size;
 	write_commande(cmd, 4);
-	write_commande(str, size);
+	write_commande(write_file, sizes);
 	cmd[0] = (uint8_t)(handle >> 8);
 	cmd[1] = (uint8_t)handle;
 	
@@ -1419,7 +1421,7 @@ uint8_t uLCD_4DLibrary::file_read_char_to_file(uint16_t handle)
 		return(cmd[2]); // return charactere
 	}
 	else
-		return 0xFFFF;
+		return 0xFF;
 }
 
 uint16_t uLCD_4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
