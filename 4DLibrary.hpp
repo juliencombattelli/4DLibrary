@@ -149,8 +149,8 @@ namespace Color
 		WHITE         		= 0xFFFF,
 		WHITESMOKE     		= 0xF7BE,
 		YELLOW         		= 0xFFE0,
-		YELLOWGREEN     	= 0x9E66;
-	}
+		YELLOWGREEN     	= 0x9E66
+	};
 }
 
 class uLCD_4DLibrary
@@ -173,6 +173,9 @@ private :
 	uint8_t code_baud_rate(uint32_t baud_rate);
 	
 public : 
+	
+	/*Constructors*/
+	uLCD_4DLibrary(PinName tx, PinName rx, PinName reset);
 	
 	/*txt function*/
 	uint8_t txt_move_cursor(uint16_t line, uint16_t column);
