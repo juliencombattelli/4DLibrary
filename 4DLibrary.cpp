@@ -63,116 +63,32 @@ uint16_t uLCD_4DLibrary::media_flush()
 }
 
 	/*UART function*/
-uint8_t uLCD_4DLibrary::code_baud_rate(uint32_t baud_rate)
+uint8_t uLCD_4DSystems::code_baud_rate(uint32_t baud_rate)
 {
-	switch(baud_rate)
-	{
-		case 110:
-		{
-			return 0;
-		}
-		break;
-		case 300:
-		{
-			return 1;
-		}
-		break;
-		case 600:
-		{
-			return 2;
-		}
-		break;
-		case 1200:
-		{
-			return 3;
-		}
-		break;
-		case 2400:
-		{
-			return 4;
-		}
-		break;
-		case 4800:
-		{
-			return 5;
-		}
-		break;
-		case 9600:
-		{
-			return 6;
-		}
-		break;
-		case 14400:
-		{
-			return 7;
-		}
-		break;
-		case 19200:
-		{
-			return 8;
-		}
-		break;
-		case 31250:
-		{
-			return 9;
-		}
-		break;
-		case 38400:
-		{
-			return 10;
-		}
-		break;
-		case 56000:
-		{
-			return 11;
-		}
-		break;
-		case 57600:
-		{
-			return 12;
-		}
-		break;
-		case 115200:
-		{
-			return 13;
-		}
-		break;
-		case 128000:
-		{
-			return 14;
-		}
-		break;
-		case 256000:
-		{
-			return 15;
-		}
-		break;
-		case 300000:
-		{
-			return 16;
-		}
-		break;
-		case 375000:
-		{
-			return 17;
-		}
-		break;
-		case 500000:
-		{
-			return 18;
-		}
-		break;
-		case 600000:
-		{
-			return 19;
-		}
-		break;
-		default:
-		{
-			return 20;
-		}
-		break;
-	}
+    switch(baud_rate)
+    {
+        case 110:       return 0;
+        case 300:       return 1;
+        case 600:       return 2;
+        case 1200:      return 3;
+        case 2400:      return 4;
+        case 4800:      return 5;
+        case 9600:      return 6;
+        case 14400:     return 7;
+        case 19200:     return 8;
+        case 31250:     return 9;
+        case 38400:     return 10;
+        case 56000:     return 11;
+        case 57600:     return 12;
+        case 115200:    return 13;
+        case 128000:    return 14;
+        case 256000:    return 15;
+        case 300000:    return 16;
+        case 375000:    return 17;
+        case 500000:    return 18;
+        case 600000:    return 19;
+        default:        return 20;
+    }
 }
 
 /*
@@ -563,233 +479,258 @@ uint16_t uLCD_4DLibrary::txt_wrap(uint16_t wrap_pixel)
 
 	/*graphics function*/
 
-uint8_t uLCD_4DLibrary::gfx_clear_screen()
+uint8_t uLCD_4DSystems::gfx_clear_screen()
 {
-	uint8_t cmd[2];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xCD;
-	
-	write_commande(cmd, 2);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
-}	
+    uint8_t cmd[2];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xCD;
+    
+    write_commande(cmd, 2);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
+}   
 
-uint8_t uLCD_4DLibrary::gfx_change_color(uint16_t old_color, uint16_t new_color)
+uint8_t uLCD_4DSystems::gfx_change_color(uint16_t old_color, uint16_t new_color)
 {
-	uint8_t cmd[6];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xFE;
-	cmd[2] = uint8_t(old_color >> 8);
-	cmd[3] = uint8_t(old_color);
-	cmd[4] = uint8_t(new_color >> 8);
-	cmd[5] = uint8_t(new_color);
-	
-	write_commande(cmd, 6);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[6];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xFE;
+    cmd[2] = uint8_t(old_color >> 8);
+    cmd[3] = uint8_t(old_color);
+    cmd[4] = uint8_t(new_color >> 8);
+    cmd[5] = uint8_t(new_color);
+    
+    write_commande(cmd, 6);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
-	uint8_t cmd[10];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xC3;
-	cmd[2] = uint8_t(center_x >> 8);
-	cmd[3] = uint8_t(center_x);
-	cmd[4] = uint8_t(center_y >> 8);
-	cmd[5] = uint8_t(center_y);
-	cmd[6] = uint8_t(radius >> 8);
-	cmd[7] = uint8_t(radius);
-	cmd[8] = uint8_t(colour >> 8);
-	cmd[9] = uint8_t(colour);
-	
-	write_commande(cmd, 10);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[10];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC3;
+    cmd[2] = uint8_t(center_x >> 8);
+    cmd[3] = uint8_t(center_x);
+    cmd[4] = uint8_t(center_y >> 8);
+    cmd[5] = uint8_t(center_y);
+    cmd[6] = uint8_t(radius >> 8);
+    cmd[7] = uint8_t(radius);
+    cmd[8] = uint8_t(colour >> 8);
+    cmd[9] = uint8_t(colour);
+    
+    write_commande(cmd, 10);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_filled_circle(uint16_t center_x, uint16_t center_y, uint16_t radius, uint16_t colour)
 {
-	uint8_t cmd[10];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xC2;
-	cmd[2] = uint8_t(center_x >> 8);
-	cmd[3] = uint8_t(center_x);
-	cmd[4] = uint8_t(center_y >> 8);
-	cmd[5] = uint8_t(center_y);
-	cmd[6] = uint8_t(radius >> 8);
-	cmd[7] = uint8_t(radius);
-	cmd[8] = uint8_t(colour >> 8);
-	cmd[9] = uint8_t(colour);
-	
-	write_commande(cmd, 10);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[10];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC2;
+    cmd[2] = uint8_t(center_x >> 8);
+    cmd[3] = uint8_t(center_x);
+    cmd[4] = uint8_t(center_y >> 8);
+    cmd[5] = uint8_t(center_y);
+    cmd[6] = uint8_t(radius >> 8);
+    cmd[7] = uint8_t(radius);
+    cmd[8] = uint8_t(colour >> 8);
+    cmd[9] = uint8_t(colour);
+    
+    write_commande(cmd, 10);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
-	uint8_t cmd[12];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xC8;
-	cmd[2] = uint8_t(x1 >> 8);
-	cmd[3] = uint8_t(x1);
-	cmd[4] = uint8_t(y1 >> 8);
-	cmd[5] = uint8_t(y1);
-	cmd[6] = uint8_t(x2 >> 8);
-	cmd[7] = uint8_t(x2);
-	cmd[8] = uint8_t(y2 >> 8);
-	cmd[9] = uint8_t(y2);
-	cmd[10] = uint8_t(colour >> 8);
-	cmd[11] = uint8_t(colour);
-	
-	write_commande(cmd, 10);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[12];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC8;
+    cmd[2] = uint8_t(x1 >> 8);
+    cmd[3] = uint8_t(x1);
+    cmd[4] = uint8_t(y1 >> 8);
+    cmd[5] = uint8_t(y1);
+    cmd[6] = uint8_t(x2 >> 8);
+    cmd[7] = uint8_t(x2);
+    cmd[8] = uint8_t(y2 >> 8);
+    cmd[9] = uint8_t(y2);
+    cmd[10] = uint8_t(colour >> 8);
+    cmd[11] = uint8_t(colour);
+    
+    write_commande(cmd, 12);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
-	uint8_t cmd[12];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xC5;
-	cmd[2] = uint8_t(x1 >> 8);
-	cmd[3] = uint8_t(x1);
-	cmd[4] = uint8_t(y1 >> 8);
-	cmd[5] = uint8_t(y1);
-	cmd[6] = uint8_t(x2 >> 8);
-	cmd[7] = uint8_t(x2);
-	cmd[8] = uint8_t(y2 >> 8);
-	cmd[9] = uint8_t(y2);
-	cmd[10] = uint8_t(colour >> 8);
-	cmd[11] = uint8_t(colour);
-	
-	write_commande(cmd, 10);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[12];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC5;
+    cmd[2] = uint8_t(x1 >> 8);
+    cmd[3] = uint8_t(x1);
+    cmd[4] = uint8_t(y1 >> 8);
+    cmd[5] = uint8_t(y1);
+    cmd[6] = uint8_t(x2 >> 8);
+    cmd[7] = uint8_t(x2);
+    cmd[8] = uint8_t(y2 >> 8);
+    cmd[9] = uint8_t(y2);
+    cmd[10] = uint8_t(colour >> 8);
+    cmd[11] = uint8_t(colour);
+    
+    write_commande(cmd, 12);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_filled_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colour)
 {
-	uint8_t cmd[12];
-	cmd[0] = 0xFF;
-	cmd[1] = 0xC4;
-	cmd[2] = uint8_t(x1 >> 8);
-	cmd[3] = uint8_t(x1);
-	cmd[4] = uint8_t(y1 >> 8);
-	cmd[5] = uint8_t(y1);
-	cmd[6] = uint8_t(x2 >> 8);
-	cmd[7] = uint8_t(x2);
-	cmd[8] = uint8_t(y2 >> 8);
-	cmd[9] = uint8_t(y2);
-	cmd[10] = uint8_t(colour >> 8);
-	cmd[11] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint8_t cmd[12];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC4;
+    cmd[2] = uint8_t(x1 >> 8);
+    cmd[3] = uint8_t(x1);
+    cmd[4] = uint8_t(y1 >> 8);
+    cmd[5] = uint8_t(y1);
+    cmd[6] = uint8_t(x2 >> 8);
+    cmd[7] = uint8_t(x2);
+    cmd[8] = uint8_t(y2 >> 8);
+    cmd[9] = uint8_t(y2);
+    cmd[10] = uint8_t(colour >> 8);
+    cmd[11] = uint8_t(colour);
+    
+    write_commande(cmd, 12);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_polyline(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
-	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
-						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
-						//				   + colourMSB + colourLSB
-	cmd[0] = 0x00;
-	cmd[1] = 0x15;
-	
-	for(int i = 0; i < n ; ++i)
-	{
-		cmd[i*4+2] = uint8_t(x_array[i]>>8);
-		cmd[i*4+3] = uint8_t(x_array[i]);
-		cmd[i*4+4] = uint8_t(y_array[i]>>8);
-		cmd[i*4+5] = uint8_t(y_array[i]);
-	}
-	
-	cmd[2+n*4] = uint8_t(colour >> 8);
-	cmd[2+n*4+1] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint32_t array_size = n*sizeof(uint16_t);
+    uint32_t cmd_size = 4+array_size*2+2;
+    
+    uint8_t cmd[cmd_size];
+    
+    cmd[0] = 0x00;
+    cmd[1] = 0x15;
+    cmd[2] = uint8_t(n>>8);
+    cmd[3] = uint8_t(n);
+    
+    memcpy(&cmd[4], x_array, array_size);
+    memcpy(&cmd[4+array_size], y_array, array_size);
+    
+    cmd[cmd_size-2] = uint8_t(colour >> 8);
+    cmd[cmd_size-1] = uint8_t(colour);
+    
+    write_commande(cmd, cmd_size);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
-	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
-						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
-						//				   + colourMSB + colourLSB
-	cmd[0] = 0x00;
-	cmd[1] = 0x13;
-	
-	for(int i = 0; i < n ; ++i)
-	{
-		cmd[i*4+2] = uint8_t(x_array[i]>>8);
-		cmd[i*4+3] = uint8_t(x_array[i]);
-		cmd[i*4+4] = uint8_t(y_array[i]>>8);
-		cmd[i*4+5] = uint8_t(y_array[i]);
-	}
-	
-	cmd[2+n*4] = uint8_t(colour >> 8);
-	cmd[2+n*4+1] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint32_t array_size = n*sizeof(uint16_t);
+    uint32_t cmd_size = 4+array_size*2+2;
+    
+    uint8_t cmd[cmd_size];
+    
+    cmd[0] = 0x00;
+    cmd[1] = 0x13;
+    cmd[2] = uint8_t(n>>8);
+    cmd[3] = uint8_t(n);
+    
+    memcpy(&cmd[4], x_array, array_size);
+    memcpy(&cmd[4+array_size], y_array, array_size);
+    
+    cmd[cmd_size-2] = uint8_t(colour >> 8);
+    cmd[cmd_size-1] = uint8_t(colour);
+    
+    write_commande(cmd, cmd_size);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
+uint8_t uLCD_4DSystems::gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour)
 {
-	uint8_t cmd[2+n*4+2]// cmdMSB + cmdLSB + x_array[0]MSB + x_array[0]LSB + y_array[0]MSB + y_array[0]LSB + ... 
-						//				   + x_array[n-1]MSB + x_array[n-1]LSB + y_array[n-1]MSB + y_array[n-1]LSB 
-						//				   + colourMSB + colourLSB
-	cmd[0] = 0x00;
-	cmd[1] = 0x14;
-	
-	for(int i = 0; i < n ; ++i)
-	{
-		cmd[i*4+2] = uint8_t(x_array[i]>>8);
-		cmd[i*4+3] = uint8_t(x_array[i]);
-		cmd[i*4+4] = uint8_t(y_array[i]>>8);
-		cmd[i*4+5] = uint8_t(y_array[i]);
-	}
-	
-	cmd[2+n*4] = uint8_t(colour >> 8);
-	cmd[2+n*4+1] = uint8_t(colour);
-	
-	write_commande(cmd, 12);
-	read_commande(cmd, 1);
-	if(cmd[0] == 0x06)
-		return 0;
-	else
-		return 1;
+    uint32_t array_size = n*sizeof(uint16_t);
+    uint32_t cmd_size = 4+array_size*2+2;
+    
+    uint8_t cmd[cmd_size];
+    
+    cmd[0] = 0x00;
+    cmd[1] = 0x14;
+    cmd[2] = uint8_t(n>>8);
+    cmd[3] = uint8_t(n);
+    
+    memcpy(&cmd[4], x_array, array_size);
+    memcpy(&cmd[4+array_size], y_array, array_size);
+    
+    cmd[cmd_size-2] = uint8_t(colour >> 8);
+    cmd[cmd_size-1] = uint8_t(colour);
+    
+    write_commande(cmd, cmd_size);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
+}
+
+uint8_t uLCD_4DSystems::gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t colour)
+{
+    uint8_t cmd[16];
+    cmd[0] = 0xFF;
+    cmd[1] = 0xC4;
+    cmd[2] = uint8_t(x1 >> 8);
+    cmd[3] = uint8_t(x1);
+    cmd[4] = uint8_t(y1 >> 8);
+    cmd[5] = uint8_t(y1);
+    cmd[6] = uint8_t(x2 >> 8);
+    cmd[7] = uint8_t(x2);
+    cmd[8] = uint8_t(y2 >> 8);
+    cmd[9] = uint8_t(y2);
+    cmd[10] = uint8_t(x3 >> 8);
+    cmd[11] = uint8_t(x3);
+    cmd[12] = uint8_t(y3 >> 8);
+    cmd[13] = uint8_t(y3);
+    cmd[14] = uint8_t(colour >> 8);
+    cmd[15] = uint8_t(colour);
+    
+    write_commande(cmd, 16);
+    read_commande(cmd, 1);
+    if(cmd[0] == 0x06)
+        return 0;
+    else
+        return 1; // error
 }
 	
 	/*media function*/

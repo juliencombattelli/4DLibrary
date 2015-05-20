@@ -8,7 +8,7 @@
 
 namespace Color
 {
-	enum : uint16_t
+	enum
 	{
 		ALICEBLUE			= 0xF7DF,
 		ANTIQUEWHITE	    = 0xFF5A,
@@ -234,6 +234,8 @@ public :
 	uint8_t gfx_draw_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour);
 
 	uint8_t gfx_draw_filled_polygon(uint16_t n, uint16_t* x_array, uint16_t* y_array, uint16_t colour);
+	
+	uint8_t gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t colour);
 	
 	/*media function*/
 	uint16_t media_init();
