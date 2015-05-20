@@ -175,7 +175,7 @@ private :
 public : 
 	
 	/*Constructors*/
-	uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t baudrate);
+	uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t baud_rate = 9600);
 	
 	/*txt function*/
 	uint8_t txt_move_cursor(uint16_t line, uint16_t column);
@@ -274,21 +274,21 @@ public :
 	/* file function*/
 	uint16_t file_last_error();
 	
-	uint16_t file_file_count(uint8_t* file_name);
+	uint16_t file_file_count(const int8_t* file_name);
 	
-	uint16_t file_file_count_and_display(uint8_t* file_name);
+	uint16_t file_file_count_and_display(const int8_t* file_name);
 	
-	uint16_t file_find_first_file_and_display(uint8_t* file_name);
+	uint16_t file_find_first_file_and_display(const int8_t* file_name);
 	
-	uint16_t file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found);
+	uint16_t file_find_first_file_and_report(const int8_t* file_name_search, uint8_t* file_name_found);
 	
 	uint16_t file_find_next_file_and_display();
 	
 	uint16_t file_find_next_file_and_report(uint8_t* file_name_found);
 	
-	uint16_t file_file_exist(uint8_t* file_name);
+	uint16_t file_file_exist(const int8_t* file_name);
 	
-	uint16_t file_open_file(uint8_t* file_name, uint8_t mode); // return handle /!\ keep it for closing file or other
+	uint16_t file_open_file(const int8_t* file_name, uint8_t mode); // return handle /!\ keep it for closing file or other
 	
 	uint16_t file_close_file(uint16_t handle); // use the opening handle
 	
@@ -300,7 +300,7 @@ public :
 	
 	uint32_t file_file_index(uint16_t handle); // use the opening handle
 	
-	uint16_t file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file); // use the opening handle
+	uint16_t file_write_file(uint16_t size, uint16_t handle, const int8_t* write_file); // use the opening handle
 	
 	uint32_t file_file_size(uint16_t handle); // use the opening handle
 	

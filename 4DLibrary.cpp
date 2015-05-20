@@ -293,7 +293,7 @@ uint16_t uLCD_4DLibrary::txt_x_gap(uint8_t pixel_count)
 	cmd[0] = 0xFF;
 	cmd[1] = 0xE2;
 	cmd[2] = 0x00;
-	if(pixel_count >= 0 && pixel_count <= 32)
+	if(pixel_count <= 32)
 		cmd[3] = pixel_count; 
 	else
 		return( 0xFFFE ); // invalid multiplier
@@ -993,8 +993,8 @@ uint16_t uLCD_4DLibrary::uart_set_baud_rate(uint32_t baud_rate)
 			return( 0xFFFF ); // error
 		else
 		{
-			return( 0x00 );
 			m_serial.baud(baud_rate);
+			return( 0x00 );
 		}
 	}
 	else
@@ -1037,7 +1037,7 @@ uint16_t uLCD_4DLibrary::file_last_error()
 	}
 }
 
-uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_count(const int8_t* file_name)
 {
 	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
@@ -1046,7 +1046,7 @@ uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(file_name, size);
+	write_commande((uint8_t*)file_name, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -1055,7 +1055,7 @@ uint16_t uLCD_4DLibrary::file_file_count(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_count_and_display(const int8_t* file_name)
 {
 	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
@@ -1064,7 +1064,7 @@ uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(file_name, size);
+	write_commande((uint8_t*)file_name, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -1073,7 +1073,7 @@ uint16_t uLCD_4DLibrary::file_file_count_and_display(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_find_first_file_and_display(const int8_t* file_name)
 {
 	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
@@ -1082,7 +1082,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(file_name, size);
+	write_commande((uint8_t*)file_name, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -1091,7 +1091,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_display(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_find_first_file_and_report(uint8_t* file_name_search, uint8_t* file_name_found)
+uint16_t uLCD_4DLibrary::file_find_first_file_and_report(const int8_t* file_name_search, uint8_t* file_name_found)
 {
 	uint16_t size = strlen((const char*)file_name_search);
 	uint8_t cmd[3];
@@ -1100,7 +1100,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_report(uint8_t* file_name_sear
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(file_name_search, size);
+	write_commande((uint8_t*)file_name_search, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -1143,7 +1143,7 @@ uint16_t uLCD_4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
+uint16_t uLCD_4DLibrary::file_file_exist(const int8_t* file_name)
 {
 	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[3];
@@ -1152,7 +1152,7 @@ uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
 	cmd[2] = 0x00;
 	
 	write_commande(cmd, 2);
-	write_commande(file_name, size);
+	write_commande((uint8_t*)file_name, size);
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
@@ -1161,7 +1161,7 @@ uint16_t uLCD_4DLibrary::file_file_exist(uint8_t* file_name)
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
+uint16_t uLCD_4DLibrary::file_open_file(const int8_t* file_name, uint8_t mode)
 {
 	uint16_t size = strlen((const char*)file_name);
 	uint8_t cmd[4];
@@ -1173,7 +1173,7 @@ uint16_t uLCD_4DLibrary::file_open_file(uint8_t* file_name, uint8_t mode)
 		cmd[3] = mode;
 		
 		write_commande(cmd, 2);
-		write_commande(file_name, size);
+		write_commande((uint8_t*)file_name, size);
 		write_commande(&(cmd[2]), 2);
 		read_commande(cmd, 3);
 		if(cmd[0] == 0x06)
@@ -1291,7 +1291,7 @@ uint32_t uLCD_4DLibrary::file_file_index(uint16_t handle)
 		return 0xFFFF;
 }
 
-uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t* write_file)
+uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, const int8_t* write_file)
 {
 	uint16_t sizes = strlen((const char*)write_file);
 	uint8_t cmd[4];
@@ -1300,7 +1300,7 @@ uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, uint8_t
 	cmd[2] = (uint8_t)(size >> 8);
 	cmd[3] = (uint8_t)size;
 	write_commande(cmd, 4);
-	write_commande(write_file, sizes);
+	write_commande((uint8_t*)write_file, sizes);
 	cmd[0] = (uint8_t)(handle >> 8);
 	cmd[1] = (uint8_t)handle;
 	
