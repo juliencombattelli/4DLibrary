@@ -1461,3 +1461,83 @@ uint16_t uLCD_4DLibrary::file_read_word_to_file(uint16_t handle)
 	else
 		return 0xFFFF;
 }
+
+uint16_t uLCD_4DLibrary::file_write_string_to_file(const int8_t* str, uint8_t handle)
+{
+	uint16_t size = strlen((const char*)str);
+	uint8_t cmd[5];
+	cmd[0] = 0x00;
+	cmd[1] = 0x20;
+	cmd[2] = 0x00;
+	cmd[3] = (uint8_t)(handle >> 8);
+	cmd[4] = (uint8_t)handle;
+	
+	write_commande(cmd, 2);
+	write_commande((uint8_t*)str, size);
+	write_commande(&(cmd[2]), 3);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		if(((cmd[1]<<8) || cmd[2]) == size)
+			return(0x00); 
+		else
+			return (0xFFFF);
+	else
+		return 0xFFFF;	
+}
+
+uint16_t uLCD_4DLibrary::file_read_string_from_file(uint16_t size, uint16_t handle, uint8_t* str)
+{
+	uint8_t cmd[6];
+	cmd[0] = 0x00;
+	cmd[1] = 0x07;
+	cmd[2] = (uint8_t)(size >> 8);
+	cmd[3] = (uint8_t)size;
+	cmd[4] = (uint8_t)(handle >> 8);
+	cmd[5] = (uint8_t)handle;
+	
+	write_commande(cmd, 6);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		read_commande(str,((cmd[1]<<8) || cmd[2]));
+		return((cmd[1]<<8) || cmd[2]); // return number of bytes read
+	}
+	else
+		return 0xFFFF;
+}
+
+uint16_t uLCD_4DLibrary::file_file_erase(const int8_t* file_name)
+{
+	uint16_t size = strlen((const char*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x03;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande((uint8_t*)file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) || cmd[2]); // return file erase status
+	else
+		return 0xFFFF;
+}
+
+uint8_t uLCD_4DLibrary::file_rewind(uint16_t handle)
+{
+	uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x08;
+	cmd[2] = (uint8_t)(handle >> 8);
+	cmd[3] = (uint8_t)handle;
+	
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+	{
+		return(cmd[2]); // return rewin status
+	}
+	else
+		return 0xFF;
+}

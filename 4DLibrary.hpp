@@ -315,5 +315,13 @@ public :
 	uint16_t file_write_word_to_file(uint16_t handle, uint16_t word); // use the opening handle
 	
 	uint16_t file_read_word_to_file(uint16_t handle); // use the opening handle
+	
+	uint16_t file_write_string_to_file(const int8_t* str, uint8_t handle); // use the opening handle
+	
+	uint16_t file_read_string_from_file(uint16_t size, uint16_t handle, uint8_t* str); // use the opening handle
+	
+	uint16_t file_file_erase(const int8_t* file_name);
+	
+	uint8_t file_rewind(uint16_t handle); // use the opening handle
 };
 
