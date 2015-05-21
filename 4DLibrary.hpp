@@ -240,6 +240,8 @@ public :
 	
 	uint8_t gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t colour);
 	
+	uint8_t gfx_draw_pixel(uint16_t center_x, uint16_t center_y, uint16_t colour);
+	
 	/*media function*/
 	uint16_t media_init();
 	
