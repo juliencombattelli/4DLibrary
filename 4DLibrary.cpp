@@ -734,15 +734,15 @@ uint8_t uLCD_4DLibrary::gfx_draw_triangle(uint16_t x1, uint16_t y1, uint16_t x2,
         return 1; // error
 }
 
-uint8_t uLCD_4DLibrary::gfx_draw_pixel(uint16_t center_x, uint16_t center_y, uint16_t colour)
+uint8_t uLCD_4DLibrary::gfx_draw_pixel(uint16_t x, uint16_t y, uint16_t colour)
 {
     uint8_t cmd[8];
     cmd[0] = 0xFF;
     cmd[1] = 0xC1;
-    cmd[2] = uint8_t(center_x >> 8);
-    cmd[3] = uint8_t(center_x);
-    cmd[4] = uint8_t(center_y >> 8);
-    cmd[5] = uint8_t(center_y);
+    cmd[2] = uint8_t(x >> 8);
+    cmd[3] = uint8_t(x);
+    cmd[4] = uint8_t(y >> 8);
+    cmd[5] = uint8_t(y);
     cmd[6] = uint8_t(colour >> 8);
     cmd[7] = uint8_t(colour);
     
