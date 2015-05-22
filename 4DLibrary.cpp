@@ -1581,3 +1581,82 @@ uint16_t uLCD_4DLibrary::file_load_function(const int8_t* file_name)
 	else
 		return 0xFFFF;
 }
+
+uint16_t uLCD_4DLibrary::file_call_function(uint16_t handle, const int16_t* arguments, uint8_t size)
+{
+	if(size <= 6)
+	{
+		uint8_t cmd[6];
+		cmd[0] = 0x00;
+		cmd[1] = 0x19;
+		cmd[2] = (uint8_t)(handle >> 8);
+		cmd[3] = (uint8_t)handle;
+		cmd[4] = 0x00;
+		cmd[5] = (uint8_t)size;
+		
+		write_commande(cmd, 6);
+		for(uint8_t i=0; i < size; i++)
+			write_commande( &arguments[i*2], 2);
+		read_commande(cmd, 3);
+		if(cmd[0] == 0x06)
+			return((cmd[1]<<8) | cmd[2]); // function returned value
+		else
+			return 0xFFFF;
+	}
+	else
+		return 0xFFFE;
+}
+
+uint16_t uLCD_4DLibrary::file_run_function(const int16_t* arguments, const int8_t* file_name, uint8_t argument_number)
+{
+	if(size <= 6)
+	{
+		uint16_t size = strlen((const char*)file_name);
+		uint8_t cmd[3];
+		cmd[0] = 0x00;
+		cmd[1] = 0x0D;
+		write_commande(cmd, 2);
+		write_commande(file_name, size);
+		cmd[0] = 0x00;
+		cmd[1] = 0x00;
+		cmd[2] = argument_number;
+		write_commande(cmd, 3);
+
+		for(uint8_t i=0; i < argument_number; i++)
+			write_commande( &arguments[i*2], 2);
+		read_commande(cmd, 3);
+		if(cmd[0] == 0x06)
+			return((cmd[1]<<8) | cmd[2]); // function returned value
+		else
+			return 0xFFFF;
+	}
+	else
+		return 0xFFFE;
+}
+
+uint16_t uLCD_4DLibrary::file_execute(const int16_t* arguments, const int8_t* file_name, uint8_t argument_number)
+{
+	if(size <= 6)
+	{
+		uint16_t size = strlen((const char*)file_name);
+		uint8_t cmd[3];
+		cmd[0] = 0x00;
+		cmd[1] = 0x04;
+		write_commande(cmd, 2);
+		write_commande(file_name, size);
+		cmd[0] = 0x00;
+		cmd[1] = 0x00;
+		cmd[2] = argument_number;
+		write_commande(cmd, 3);
+
+		for(uint8_t i=0; i < argument_number; i++)
+			write_commande( &arguments[i*2], 2);
+		read_commande(cmd, 3);
+		if(cmd[0] == 0x06)
+			return((cmd[1]<<8) | cmd[2]); // function returned value
+		else
+			return 0xFFFF;
+	}
+	else
+		return 0xFFFE;
+}

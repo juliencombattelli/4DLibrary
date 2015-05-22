@@ -327,5 +327,12 @@ public :
 	uint8_t file_rewind(uint16_t handle); // use the opening handle
 	
 	uint16_t file_load_function(const int8_t* file_name);
+	
+	uint16_t file_call_function(uint16_t handle, const int16_t* arguments, uint8_t size); // use handle gived by file_load_function /!\ 6 arguments max
+	
+	uint16_t file_run_function(const int16_t* arguments, const int8_t* file_name, uint8_t argument_number); // use handle gived by file_load_function /!\ 6 arguments max
+	
+	uint16_t file_execute(const int16_t* arguments, const int8_t* file_name, uint8_t argument_number); // use handle gived by file_load_function /!\ 6 arguments max
+
 };
 
