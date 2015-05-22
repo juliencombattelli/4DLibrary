@@ -9,6 +9,8 @@
 uLCD_4DLibrary::uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t baud_rate) : m_serial(tx, rx), m_rst(reset)
 {
 	m_serial.baud(baud_rate);
+	m_rst.write(1);
+	wait(4);
 	clear_rx_buffer();
 }
 
@@ -1560,4 +1562,22 @@ uint8_t uLCD_4DLibrary::file_rewind(uint16_t handle)
 	}
 	else
 		return 0xFF;
+}
+
+uint16_t uLCD_4DLibrary::file_load_function(const int8_t* file_name)
+{
+	uint16_t size = strlen((const char*)file_name);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x08;
+	cmd[2] = 0x00;
+	
+	write_commande(cmd, 2);
+	write_commande((uint8_t*)file_name, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) | cmd[2]); // returns a pointer to the memory allocation
+	else
+		return 0xFFFF;
 }

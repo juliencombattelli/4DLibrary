@@ -325,5 +325,7 @@ public :
 	uint16_t file_file_erase(const int8_t* file_name);
 	
 	uint8_t file_rewind(uint16_t handle); // use the opening handle
+	
+	uint16_t file_load_function(const int8_t* file_name);
 };
 
