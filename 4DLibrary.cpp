@@ -145,7 +145,7 @@ uint8_t uLCD_4DLibrary::txt_put_str(const int8_t* str)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		if( ((cmd[1]<<8) || cmd[2]) == size)
+		if( ((cmd[1]<<8) | cmd[2]) == size)
 			return 0;
 		else
 			return 2;
@@ -165,7 +165,7 @@ uint16_t uLCD_4DLibrary::txt_char_width(uint8_t car)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // refert to datasheet
 	}
 	else
 		return ( 0xFFFF ); // impossible value -> error
@@ -182,7 +182,7 @@ uint16_t uLCD_4DLibrary::txt_char_height(uint8_t car)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // refert to datasheet
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // refert to datasheet
 	}
 	else
 		return ( 0xFFFF ); // impossible value -> error
@@ -200,7 +200,7 @@ uint16_t uLCD_4DLibrary::txt_foreground_color(uint16_t color)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous color
 	}
 	else
 		return 0xFFFF; // error
@@ -218,7 +218,7 @@ uint16_t uLCD_4DLibrary::txt_background_color(uint16_t color)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous color
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous color
 	}
 	else
 		return 0xFFFF; // error
@@ -239,7 +239,7 @@ uint16_t uLCD_4DLibrary::txt_set_font(uint8_t font)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous font
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous font
 	}
 	else
 		return 0xFFFF; // error
@@ -260,7 +260,7 @@ uint16_t uLCD_4DLibrary::txt_width_multiplier(uint8_t multiplier)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous multiplier
 	}
 	else
 		return 0xFFFF; // error
@@ -281,7 +281,7 @@ uint16_t uLCD_4DLibrary::txt_height_multiplier(uint8_t multiplier)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous multiplier
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous multiplier
 	}
 	else
 		return 0xFFFF; // error
@@ -302,7 +302,7 @@ uint16_t uLCD_4DLibrary::txt_x_gap(uint8_t pixel_count)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous x_gap
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous x_gap
 	}
 	else
 		return 0xFFFF; // error
@@ -323,7 +323,7 @@ uint16_t uLCD_4DLibrary::txt_y_gap(uint8_t pixel_count)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous y_gap
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous y_gap
 	}
 	else
 		return 0xFFFF; // error
@@ -344,7 +344,7 @@ uint16_t uLCD_4DLibrary::txt_bold(bool bold)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous bold mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous bold mode
 	}
 	else
 		return 0xFFFF; // error
@@ -365,7 +365,7 @@ uint16_t uLCD_4DLibrary::txt_inverse(bool inverse)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous inverse mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous inverse mode
 	}
 	else
 		return 0xFFFF; // error
@@ -386,7 +386,7 @@ uint16_t uLCD_4DLibrary::txt_italic(bool italic)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous italic mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous italic mode
 	}
 	else
 		return 0xFFFF; // error
@@ -407,7 +407,7 @@ uint16_t uLCD_4DLibrary::txt_opacity(bool opaque)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous opacity mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous opacity mode
 	}
 	else
 		return 0xFFFF; // error
@@ -428,7 +428,7 @@ uint16_t uLCD_4DLibrary::txt_underline(bool underline) //txt_y_gap command is re
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous underline mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous underline mode
 	}
 	else
 		return 0xFFFF; // error
@@ -454,7 +454,7 @@ uint16_t uLCD_4DLibrary::txt_attributes(bool bold, bool italic, bool inverse, bo
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous attributes mode
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous attributes mode
 	}
 	else
 		return 0xFFFF; // error
@@ -472,7 +472,7 @@ uint16_t uLCD_4DLibrary::txt_wrap(uint16_t wrap_pixel)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return( (uint16_t)(cmd[1]<<8) || cmd[2]); // previous wrap pixel
+		return( (uint16_t)(cmd[1]<<8) | cmd[2]); // previous wrap pixel
 	}
 	else
 		return 0xFFFF; // error
@@ -1070,7 +1070,7 @@ uint16_t uLCD_4DLibrary::file_file_count(const int8_t* file_name)
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]);
+		return((cmd[1]<<8) | cmd[2]);
 	else
 		return 0xFFFF;
 }
@@ -1088,7 +1088,7 @@ uint16_t uLCD_4DLibrary::file_file_count_and_display(const int8_t* file_name)
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]);
+		return((cmd[1]<<8) | cmd[2]);
 	else
 		return 0xFFFF;
 }
@@ -1106,7 +1106,7 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_display(const int8_t* file_nam
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]);
+		return((cmd[1]<<8) | cmd[2]);
 	else
 		return 0xFFFF;
 }
@@ -1125,8 +1125,8 @@ uint16_t uLCD_4DLibrary::file_find_first_file_and_report(const int8_t* file_name
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		read_commande(file_name_found,((cmd[1]<<8) || cmd[2]));
-		return((cmd[1]<<8) || cmd[2]); // return stringlength
+		read_commande(file_name_found,((cmd[1]<<8) | cmd[2]));
+		return((cmd[1]<<8) | cmd[2]); // return stringlength
 	}
 	else
 		return 0xFFFF;
@@ -1141,7 +1141,7 @@ uint16_t uLCD_4DLibrary::file_find_next_file_and_display()
 	write_commande(cmd, 2);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]); // return file exist status
+		return((cmd[1]<<8) | cmd[2]); // return file exist status
 	else
 		return 0xFFFF;
 }
@@ -1156,8 +1156,8 @@ uint16_t uLCD_4DLibrary::file_find_next_file_and_report(uint8_t* file_name_found
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		read_commande(file_name_found,((cmd[1]<<8) || cmd[2]));
-		return((cmd[1]<<8) || cmd[2]); // return stringlength
+		read_commande(file_name_found,((cmd[1]<<8) | cmd[2]));
+		return((cmd[1]<<8) | cmd[2]); // return stringlength
 	}
 	else
 		return 0xFFFF;
@@ -1176,7 +1176,7 @@ uint16_t uLCD_4DLibrary::file_file_exist(const int8_t* file_name)
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]); // return file exist status
+		return((cmd[1]<<8) | cmd[2]); // return file exist status
 	else
 		return 0xFFFF;
 }
@@ -1197,7 +1197,7 @@ uint16_t uLCD_4DLibrary::file_open_file(const int8_t* file_name, uint8_t mode)
 		write_commande(&(cmd[2]), 2);
 		read_commande(cmd, 3);
 		if(cmd[0] == 0x06)
-			return((cmd[1]<<8) || cmd[2]); // return handle /!\ keep it for closing file
+			return((cmd[1]<<8) | cmd[2]); // return handle /!\ keep it for closing file
 		else
 			return 0xFFFF;
 	}
@@ -1219,7 +1219,7 @@ uint16_t uLCD_4DLibrary::file_close_file(uint16_t handle)
 		return( 0xFFFF ); // error
 	else
 	{
-		return( (cmd[1]<<8) || cmd[2] ); // return status
+		return( (cmd[1]<<8) | cmd[2] ); // return status
 	}
 }
 
@@ -1237,8 +1237,8 @@ uint16_t uLCD_4DLibrary::file_read_file(uint16_t size, uint16_t handle, uint8_t*
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		read_commande(read_file,((cmd[1]<<8) || cmd[2]));
-		return((cmd[1]<<8) || cmd[2]); // return number of bytes read
+		read_commande(read_file,((cmd[1]<<8) | cmd[2]));
+		return((cmd[1]<<8) | cmd[2]); // return number of bytes read
 	}
 	else
 		return 0xFFFF;
@@ -1260,7 +1260,7 @@ uint16_t uLCD_4DLibrary::file_file_seek(uint16_t handle, uint32_t byte_position)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return status
+		return((cmd[1]<<8) | cmd[2]); // return status
 	}
 	else
 		return 0xFFFF;
@@ -1284,7 +1284,7 @@ uint16_t uLCD_4DLibrary::file_file_index(uint16_t handle, uint32_t record_size, 
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return status
+		return((cmd[1]<<8) | cmd[2]); // return status
 	}
 	else
 		return 0xFFFF;
@@ -1302,8 +1302,8 @@ uint32_t uLCD_4DLibrary::file_file_index(uint16_t handle)
 	read_commande(cmd, 7);
 	if(cmd[0] == 0x06)
 	{
-		if(((cmd[1]<<8) || cmd[2]) == 0x0001)
-			return((cmd[3]<<24) || (cmd[4]<<16) || (cmd[5]<<8) || cmd[6]); // return current index pointer
+		if(((cmd[1]<<8) | cmd[2]) == 0x0001)
+			return((cmd[3]<<24) | (cmd[4]<<16) | (cmd[5]<<8) | cmd[6]); // return current index pointer
 		else
 			return 0xFFFF;
 	}
@@ -1328,7 +1328,7 @@ uint16_t uLCD_4DLibrary::file_write_file(uint16_t size, uint16_t handle, const i
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		if(((cmd[1]<<8) || cmd[2]) == size)
+		if(((cmd[1]<<8) | cmd[2]) == size)
 			return 0xFFFF;
 		else
 			return 0;
@@ -1349,8 +1349,8 @@ uint32_t uLCD_4DLibrary::file_file_size(uint16_t handle)
 	read_commande(cmd, 7);
 	if(cmd[0] == 0x06)
 	{
-		if(((cmd[1]<<8) || cmd[2]) == 0x0001)
-			return((cmd[3]<<24) || (cmd[4]<<16) || (cmd[5]<<8) || cmd[6]); // return file size
+		if(((cmd[1]<<8) | cmd[2]) == 0x0001)
+			return((cmd[3]<<24) | (cmd[4]<<16) | (cmd[5]<<8) | cmd[6]); // return file size
 		else
 			return 0xFFFF;
 	}
@@ -1374,7 +1374,7 @@ uint16_t uLCD_4DLibrary::file_display_image(uint16_t handle, uint16_t x, uint16_
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return code error
+		return((cmd[1]<<8) | cmd[2]); // return code error
 	}
 	else
 		return 0xFFFF;
@@ -1400,7 +1400,7 @@ uint16_t uLCD_4DLibrary::file_screen_capture(uint16_t handle, uint16_t x, uint16
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return code error, 0 if success
+		return((cmd[1]<<8) | cmd[2]); // return code error, 0 if success
 	}
 	else
 		return 0xFFFF;
@@ -1420,7 +1420,7 @@ uint16_t uLCD_4DLibrary::file_write_char_to_file(uint16_t handle, uint8_t charac
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return status
+		return((cmd[1]<<8) | cmd[2]); // return status
 	}
 	else
 		return 0xFFFF;
@@ -1458,7 +1458,7 @@ uint16_t uLCD_4DLibrary::file_write_word_to_file(uint16_t handle, uint16_t word)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return status
+		return((cmd[1]<<8) | cmd[2]); // return status
 	}
 	else
 		return 0xFFFF;
@@ -1476,7 +1476,7 @@ uint16_t uLCD_4DLibrary::file_read_word_to_file(uint16_t handle)
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		return((cmd[1]<<8) || cmd[2]); // return word
+		return((cmd[1]<<8) | cmd[2]); // return word
 	}
 	else
 		return 0xFFFF;
@@ -1497,7 +1497,7 @@ uint16_t uLCD_4DLibrary::file_write_string_to_file(const int8_t* str, uint8_t ha
 	write_commande(&(cmd[2]), 3);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		if(((cmd[1]<<8) || cmd[2]) == size)
+		if(((cmd[1]<<8) | cmd[2]) == size)
 			return(0x00); 
 		else
 			return (0xFFFF);
@@ -1519,8 +1519,8 @@ uint16_t uLCD_4DLibrary::file_read_string_from_file(uint16_t size, uint16_t hand
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
 	{
-		read_commande(str,((cmd[1]<<8) || cmd[2]));
-		return((cmd[1]<<8) || cmd[2]); // return number of bytes read
+		read_commande(str,((cmd[1]<<8) | cmd[2]));
+		return((cmd[1]<<8) | cmd[2]); // return number of bytes read
 	}
 	else
 		return 0xFFFF;
@@ -1539,7 +1539,7 @@ uint16_t uLCD_4DLibrary::file_file_erase(const int8_t* file_name)
 	write_commande(&(cmd[2]), 1);
 	read_commande(cmd, 3);
 	if(cmd[0] == 0x06)
-		return((cmd[1]<<8) || cmd[2]); // return file erase status
+		return((cmd[1]<<8) | cmd[2]); // return file erase status
 	else
 		return 0xFFFF;
 }
